@@ -1,11 +1,15 @@
 # Trabalho-ed2
 
 vem trabalhar 😭😭
-ex:
- 1 incompleto 
- 2 ?
- 3 ?
- 4 ?
- 5 ?
- 6 ?
+ ex1. incompleto   
+ 
+ ex2. ? 
+ 
+ ex.3 ?
+ 
+ ex.4 ?
+ 
+ ex.5 ?
+ 
+ ex.6 ?
 
