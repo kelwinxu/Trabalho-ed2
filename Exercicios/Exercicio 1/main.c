@@ -9,7 +9,7 @@ int main(){
     /// permutations, é um ponteiro que armazena os ponteiros que comtem as respectivas permutacoes do ponteiro v.
     permutations = (int**)malloc(2000*sizeof(int)); /// obs, por algum motivo, o tammanho d vetor precisa ser pelo menos duas vezes maior,
     vetor_alocate(permutations, 720);
-
+    scanf("%d",&alvo);
     escanear(v,MAX_SIZE);
     funcao_anagramas(v,MAX_SIZE,permutations);
 
@@ -17,6 +17,7 @@ int main(){
             printf("\n");
         printar(permutations[i],MAX_SIZE);
     }*/
-    check_operation(permutations,720,13);
+    check_operation(permutations,720,alvo);
     return 0;
 }
+
