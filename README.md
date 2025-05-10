@@ -2,6 +2,8 @@
 
 vem trabalhar 😭😭
 
+>>> O progresso ta sendo registrado na aba de "Projects", ve se todo mundo consegue acessar <<<
+
 Status / Quem ta fazendo /
 
  ex1. Em progresso / Lindo Biro  
