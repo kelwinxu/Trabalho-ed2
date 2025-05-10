@@ -13,9 +13,10 @@ int main(){
     escanear(v,MAX_SIZE);
     funcao_anagramas(v,MAX_SIZE,permutations);
 
-    for(int i=0;i<720;i++){
+    /*for(int i=0;i<720;i++){
             printf("\n");
         printar(permutations[i],MAX_SIZE);
-    }
+    }*/
+    check_operation(permutations,720,13);
     return 0;
 }
