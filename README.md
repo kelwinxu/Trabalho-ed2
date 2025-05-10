@@ -1,4 +1,4 @@
-# Trabalho-ed2 OLAA
+# Trabalho-ed2
 
 vem trabalhar 😭😭
 
