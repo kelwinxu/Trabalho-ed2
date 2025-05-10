@@ -1,6 +1,7 @@
 # Trabalho-ed2
 
 vem trabalhar 😭😭
+
  ex1. incompleto   
  
  ex2. ? 
