@@ -8,13 +8,13 @@ Status / Quem ta fazendo /
  
  ex2. Em progresso / Gabriel
  
- ex.3 ?
+ ex3. ?
  
- ex.4 ?
+ ex4. (Reutiliza código do ex3.)
  
- ex.5 Em progresso / Kelwin
+ ex5. Em progresso / Kelwin
  
- ex.6 ?
+ ex6. ?
 
- ex.7 ?
+ ex7. ?
 
