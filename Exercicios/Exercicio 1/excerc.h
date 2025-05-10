@@ -13,4 +13,6 @@ void printar(int  *v,int tam);
 
 /// aloca, dentro de um pointeiro de ponteiro, os ponteiros de tamanho MAX_SIZE.
 void **vetor_alocate(int **permutations, int tam);
+///
+void check_operation(int **permutations, int iteracao, int valor);
 #endif // EXCERC_H_INCLUDED
