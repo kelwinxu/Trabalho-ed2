@@ -2,7 +2,9 @@
 
 vem trabalhar 😭😭
 
- ex1. incompleto   
+Status / Quem ta fazendo /
+
+ ex1. incompleto / Lindo Biro  
  
  ex2. ? 
  
@@ -13,4 +15,6 @@ vem trabalhar 😭😭
  ex.5 ?
  
  ex.6 ?
+
+ ex.7 ?
 
