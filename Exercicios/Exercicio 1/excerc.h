@@ -15,4 +15,9 @@ void printar(int  *v,int tam);
 void **vetor_alocate(int **permutations, int tam);
 ///
 void check_operation(int **permutations, int iteracao, int valor);
+
+void F_OP(int op);
+void F_ELEM(int a);
+void F_print(int v[6],int sinais[5]);
 #endif // EXCERC_H_INCLUDED
+
