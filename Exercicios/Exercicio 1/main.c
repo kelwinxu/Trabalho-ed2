@@ -1,14 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "excerc.h"
+
 int main(){
-    int *v;
+    int *v, **permutations;
     int alvo;
-    v = calloc(10,sizeof(int));
-    for(int i=0;i<6;i++){
-        scanf("%d",&v[i]);
+    v = calloc(MAX_SIZE,sizeof(int));
+    /// permutations, é um ponteiro que armazena os ponteiros que comtem as respectivas permutacoes do ponteiro v.
+    permutations = (int**)malloc(2000*sizeof(int)); /// obs, por algum motivo, o tammanho d vetor precisa ser pelo menos duas vezes maior,
+    vetor_alocate(permutations, 720);
+
+    escanear(v,MAX_SIZE);
+    funcao_anagramas(v,MAX_SIZE,permutations);
+
+    for(int i=0;i<720;i++){
+            printf("\n");
+        printar(permutations[i],MAX_SIZE);
     }
-    scanf("%d",&alvo);
-    funcao_anagramas(v,6);
     return 0;
 }
