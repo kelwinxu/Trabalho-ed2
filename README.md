@@ -2,3 +2,6 @@
 
 vem trabalhar 😭😭
 
+excercicio 1 imcompleto 
+
+
