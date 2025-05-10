@@ -59,52 +59,53 @@ void funcao_anagramas(int v[MAX_SIZE],int size,int **permutations){
     }
 }
 void check_operation(int **permutations, int iteracao, int valor){
-int *elem = (int*)malloc(MAX_SIZE*sizeof(int));
-if(iteracao<1){
-    printf("--Nao existe solucao--");
-    return;
 
-}
+    int *elem = (int*)malloc(MAX_SIZE*sizeof(int));
 
-elem = permutations[iteracao-1];
-/*printar(elem,6);*/
-int comp;
-comp = elem[0];
+    if(iteracao<1){
+        printf("--Nao existe solucao--");
+        return;
 
-if(elem[1]>0){
-        if(comp%(elem[1])==0){
-            comp = comp/(elem[1]);
-                if(elem[2]>0){comp = comp*(elem[2]);}
+    }
+    elem = permutations[iteracao-1];
+    /*printar(elem,6);*/
+    int comp;
+    comp = elem[0];
 
-        }
+    if(elem[1]>0){
+            if(comp%(elem[1])==0){
+                comp = comp/(elem[1]);
+                    if(elem[2]>0){comp = comp*(elem[2]);}
+
+            }
 
 
-}
+    }
 
-comp = comp + elem[3];
-comp = comp - elem[4];
+    comp = comp + elem[3];
+    comp = comp - elem[4];
 
-if(elem[5]>0){
-    if(comp*elem[5] == valor){
-            printf("((%d / %d)* %d + %d - %d)* %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
-            return;
-        }
-    if(comp%elem[5]==0){
-        if(comp/elem[5] == valor ){
-            printf("((%d / %d)* %d + %d - %d)/ %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
-            return;
+    if(elem[5]>0){
+        if(comp*elem[5] == valor){
+                printf("((%d / %d)* %d + %d - %d)* %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
+                return;
+            }
+        if(comp%elem[5]==0){
+            if(comp/elem[5] == valor ){
+                printf("((%d / %d)* %d + %d - %d)/ %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
+                return;
+            }
         }
     }
-}
-if((comp - elem[5]) == valor){
-    printf("((%d / %d)* %d + %d - %d) - %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
-    return;
-}
+    if((comp - elem[5]) == valor){
+        printf("((%d / %d)* %d + %d - %d) - %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
+        return;
+    }
 
-if((comp + elem[5]) == valor){
-    printf("((%d / %d )* %d + %d - %d)  + %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
-    return;
-}
-check_operation(permutations,iteracao-1,valor);
+    if((comp + elem[5]) == valor){
+        printf("((%d / %d )* %d + %d - %d)  + %d = %d ",elem[0],elem[1],elem[2],elem[3],elem[4],elem[5],valor);
+        return;
+    }
+    check_operation(permutations,iteracao-1,valor);
 
 }
