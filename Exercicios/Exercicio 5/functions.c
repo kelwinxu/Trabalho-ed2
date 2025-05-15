@@ -2,10 +2,18 @@
 #include <stdlib.h>
 #include "functions.h"
 
-int* stringToInt(char *c){
+int* stringToInt(char *c, int size){
     int *array1 = (int*)malloc(sizeof(int) * strlen(c));    // Allocate memory for the array of integers
-    for (int i = 0; i < strlen(c); i++) {                   // For each character in the string
-        array1[i] = c[i] - 'a';                             // Convert the character to an integer
+    for (int i = 0; i < size; i++) {                   // For each character in the string
+        if(c[i] >= 'a' || c[i] <= 'z') {                    // Check if the character is a lowercase letter
+            array1[i] = (int)(c[i] - 'a');                         // Convert the character to an integer
+        } else if(c[i] >= 'A' || c[i] <= 'Z') {             // Check if the character is an uppercase letter
+            array1[i] = (int)(c[i] - 'A');                         // Convert the character to an integer
+        } else {
+            if(DEBUG) printf("ERROR: Invalid character\n");
+            return NULL;                                    // Return NULL if the character is not a letter
+        }
+
     }
     return array1;                                          // Return the array
 }
@@ -13,12 +21,12 @@ int* stringToInt(char *c){
 char* intToString(int *i){
     char *c = (char*)malloc(sizeof(char) * 100);            // Allocate memory for the string
     for (int j = 0; j < 100; j++) {                         // For each element in the array
-        c[j] = i[j] + 'a';                                  // Convert the integer to a character
+        c[j] = (char)(i[j] + 'a');                                  // Convert the integer to a character
     }
     return c;                                               // Return the string
 }   
 
-/*General algorithm idea:
+/*General algorithm idea (insertion sort):
 Starts with the first element of the array as sorted.
 Then, for each subsequent element, it finds the correct position in the sorted part of the array using binary search.
 Once the position is found, it shifts all larger elements to the right and inserts the current element at its correct position.
@@ -60,7 +68,7 @@ void binaryInsertionSort(int *array1, int size){
         // Move elements to make space for the key
         while (j >= left) {                         // While there are elements to move
             array1[j + 1] = array1[j];              // Move the element to the right
-            j--;                                    // Decrease the index
+            j--;                                    // Move pointer to the left
         }
         array1[left] = key;                         // Insert the key at the correct position
         if(DEBUG) {
@@ -82,5 +90,32 @@ int checkEqual(int *array1, int *array2, int size){
     return 0;                                       // Return true
 }
 
+int isAnagram(char *inputString1, char *inputString2){
+    if(strlen(inputString1) != strlen(inputString2)){
+        if(DEBUG) printf("ERROR: Diferent size parameters\n");
+        printf("Palavra 1: %s Palavra 2: %s Anagrama? Nao", inputString1, inputString2); // Print the input strings
+        return 0;                                               // Return error code (1 = str size error)  // runcodes wont allow this, so return 0
+    }
+
+    printf("Palavra 1: %s Palavra 2: %s Anagrama? ", inputString1, inputString2); // Print the input strings
+
+    int size = (int)strlen(inputString1);                            // Get the size of the input string
+
+    int *array1 = stringToInt(inputString1, size);                    // Convert the input string to an array of integers
+    int *array2 = stringToInt(inputString2, size);
+
+    binaryInsertionSort(array1, size);                          // Sort the first array using binary insertion sort
+    binaryInsertionSort(array2, size);                          // Sort the second array using binary insertion sort
+
+    if (checkEqual(array1, array2, size) == 0) {                // Check if the two sorted arrays are equal
+        printf("Sim\n");
+    } else {
+        printf("Nao\n");
+    }
+
+    free(array1);                                               // Free the memory allocated for the arrays
+    free(array2);
+    return 0;                                                   // Return success code (0 = success)
+}
 
 
