@@ -13,7 +13,7 @@ tabela *f_criatabela(char tam[100]);
 /// carrega a tabela na memoria
 tabela *f_carregatabela(FILE *arq,tabela *Hash);
 ///insere na tabela hash que esta na memmoria
-void f_ineserenatabela(tabela *Hash, char str[100]);
+void f_ineserenatabela(tabela *Hash, char str[100],char tam[100]);
 ///insere tabela hash no arquivo txt
 void f_inserehashnorquivo(tabela *Hash,FILE *arq, char *tam);
 /// menu
