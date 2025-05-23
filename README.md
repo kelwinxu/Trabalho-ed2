@@ -10,7 +10,7 @@ vem trabalhar 😭😭
  
  >ex2. Em progresso (uns 30% pronto) / Gabriel
  
- >ex3. Em progresso
+ >ex3. Em progresso (60%)
  
  >ex4. (Reutiliza código do ex3.)
  
