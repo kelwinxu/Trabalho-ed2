@@ -14,10 +14,10 @@ struct formulario{ ///feito
 };
 
 ///criar tabela hash
-tabela *f_criatabela(char tam[100]){ ///feito
+tabela *f_criatabela(char *tam){ ///feito
     char *endptr;
     int tamanho = strtol(tam,&endptr,10);
-    tamanho = f_numeros_primos(tamanho);
+    sprintf(tam,"%d",tamanho);
     tabela *hash = (tabela*)malloc(tamanho*sizeof(tabela));
     for(int i=0;i<tamanho;i++){
         aluno *al = (aluno*)malloc(sizeof(aluno));
@@ -47,9 +47,10 @@ return arq;
 }
 ///carrega tabela hash do arquivo txt
 tabela *f_carregatabela(FILE *arq,tabela *hash){ ///feito
-    char str[1000], aux[100], **endptr,**endptr2,*token;
+    char str[1000],str2[100], aux[100], **endptr,**endptr2,*token;///////////////////
     int tam;
     fgets(str,100,arq);
+    fgets(str2,100,arq);///////////////////
     hash = f_criatabela(str);
     tam = strtol(str,endptr,10);
     for(int i=0;i<tam;i++){
@@ -71,6 +72,7 @@ tabela *f_carregatabela(FILE *arq,tabela *hash){ ///feito
     hash[i] = al;
     /*printf("%d %s %s %s\n",al->indice,al->nusp,al->nome,al->curso);*/
     }
+
     return hash;
 }
 /// funcao que devolve os numeros primos mais proximos
@@ -102,17 +104,26 @@ while (hash[chave]->allocated == 1){
 }
 return chave;
 }
+///esapalhamento duplo
+void f_espalhamentoduplo(){
+
+
+
+
+}
 ///insere na tabela hash
-void f_ineserenatabela(tabela *hash,char str[100],char tam[100]){ ///processo precisa alguma condicao caso a tabela esteja cheia
+void f_ineserenatabela(tabela *hash,char str[100],char tam[100], char *qtd_elem){ ///processo precisa alguma condicao caso a tabela esteja cheia///////////////////
     char *token,*endptr,*endptr2;
     FILE *arq;
     int i=0;
-    int chave;
+    int chave, hashtam,qtd;
     str[strcspn(str, "\n")] = 0;
     token = strtok(str," ");
     token = strtok(NULL," ");
     token = strtok(NULL," ");
-        while(token != NULL){
+    hashtam = strtol(tam,endptr,10);
+    qtd = strtol(qtd_elem,endptr,10);
+            while(token != NULL){
 
             aluno *al = (aluno*)malloc(sizeof(aluno));
 
@@ -130,24 +141,30 @@ void f_ineserenatabela(tabela *hash,char str[100],char tam[100]){ ///processo pr
             al->curso = malloc(100*sizeof(char));
             memcpy(al->curso,token,100);
             al->allocated = 1;
-
+            qtd++;
+            if(qtd> (hashtam*0.7)){
+                printf("70 ocupado %d",qtd);
+            }
             chave = f_espalhmamentoquadratico(hash,chave,tam);
             al->indice = chave;
             hash[chave] = al;
+
             /*printf("%d %s %s %s",al->indice,al->nusp,al->nome,al->curso);*/
 
             }
      }
+     sprintf(qtd_elem,"%d",qtd);
 }
 
 ///insere tabela hash no arquivo txt
-void f_inserehashnorquivo(tabela *hash,FILE *arq, char *tam){///feito
+void f_inserehashnorquivo(tabela *hash,FILE *arq, char *tam,char qtd_elem[100]){///feito///////////////////
     char **endptr;
     int tamanho = strtol(tam,endptr,10);
-    sprintf(tam,"%d",tamanho);
     aluno *no = (tabela*)malloc(sizeof(tabela));
-    tam[strcspn(tam, "\n")] = 0;
+    tam[strcspn(tam,"\n")] = 0;
     fprintf(arq,"%s\n",tam);
+
+    fprintf(arq,"%s\n",qtd_elem);///////////////////
     if(no == NULL){return;}
     for(int i=0;i<tamanho;i++){
     aluno *aluno = (tabela*)malloc(sizeof(tabela));
@@ -191,7 +208,7 @@ for(int k=0;k<16;k++){
 return xor;
 }
 ///funcao hash chave
-int f_chave(char nusp[100],char tamanho_hash[100]){/// em processo falta a funcao de numeros primos
+int f_chave(char nusp[100],char tamanho_hash[100]){
 char **endptr, **endptr2;
 int N = strtol(nusp,endptr,10);
 int vusp[100];
@@ -217,7 +234,7 @@ int mod = strtol(tamanho_hash,endptr2,10);
     }
     /*printf("\n");*/
     for(int i=0; i<tam;i++){
-        vusp[i] = (vusp[i]+1)*(f_numeros_primos(i)); /// fazer funcao que retorne numeros primos
+        vusp[i] = (vusp[i]+1)*(f_numeros_primos(i));
         /*printf("%d ",vusp[i]);*/
     }
     /*printf("\n");*/
@@ -267,12 +284,16 @@ void menu(tabela *hash, FILE *arq){
 
         token = strtok(NULL," ");
         path = strtok(NULL," ");
+        aux = strtol(token,endptr,10);
+        aux = f_numeros_primos(aux);
+        sprintf(token,"%d",aux);
         hash = f_criatabela(token);
         arq = f_criararq(path);
         if(arq == NULL){printf("hash ou arquivo vazio");return;}
         /// insere tamanho da tabela hash no arquivo texto
         /// insere tabela, NULL
-        f_inserehashnorquivo(hash,arq,token);
+
+        f_inserehashnorquivo(hash,arq,token,"0");///////////////////
         fclose(arq);
     }
 
@@ -285,13 +306,14 @@ void menu(tabela *hash, FILE *arq){
         fseek(arq, 0, SEEK_SET);
         if(hash == NULL || arq == NULL){printf("hash ou arquivo vazio");return;}
         ///insira na tabela, usando a funcao hash
-        fgets(str3,100,arq);
-
-        f_ineserenatabela(hash,str_save,str3);
+        char str4[100];///////////////////
+        fscanf(arq,"%s",str3);
+        fscanf(arq,"%s",str4);
+        f_ineserenatabela(hash,str_save,str3,&str4);///////////////////
         fclose(arq);
         arq = f_criararq(path);
         fseek(arq, 0, SEEK_SET);
-        f_inserehashnorquivo(hash,arq,str3);
+        f_inserehashnorquivo(hash,arq,str3,str4);///////////////////
         fclose(arq);
 
     }
