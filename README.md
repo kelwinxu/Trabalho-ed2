@@ -10,7 +10,7 @@ vem trabalhar 😭😭
  
  >ex2. Em progresso (uns 30% pronto) / Gabriel
  
- >ex3. Em progresso (90%)
+ >ex3. Finalizado (precisa revisão por pares)
  
  >ex4. Em progresso (60%)
  
