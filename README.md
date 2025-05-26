@@ -8,7 +8,7 @@ vem trabalhar 😭😭
 
  >ex1. Em progresso (90%)
  
- >ex2. Em progresso (uns 30% pronto) / Gabriel
+ >ex2. Finalizado (necessita de revisão, main baseado na pura gambiarra)
  
  >ex3. Finalizado (precisa revisão por pares)
  
