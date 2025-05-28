@@ -4,11 +4,11 @@
 
 int* stringToInt(char *c, int size){
     int *array1 = (int*)malloc(sizeof(int) * strlen(c));    // Allocate memory for the array of integers
-    for (int i = 0; i < size; i++) {                   // For each character in the string
+    for (int i = 0; i < size; i++) {                        // For each character in the string
         if(c[i] >= 'a' || c[i] <= 'z') {                    // Check if the character is a lowercase letter
-            array1[i] = (int)(c[i] - 'a');                         // Convert the character to an integer
+            array1[i] = (int)(c[i] - 'a');                  // Convert the character to an integer
         } else if(c[i] >= 'A' || c[i] <= 'Z') {             // Check if the character is an uppercase letter
-            array1[i] = (int)(c[i] - 'A');                         // Convert the character to an integer
+            array1[i] = (int)(c[i] - 'A');                  // Convert the character to an integer
         } else {
             if(DEBUG) printf("ERROR: Invalid character\n");
             return NULL;                                    // Return NULL if the character is not a letter
@@ -60,7 +60,7 @@ void binaryInsertionSort(int *array1, int size){
             int mid = left + (right - left) / 2;    // Calculate the middle index
             if (array1[mid] > key) {                // If the middle element is greater than the key, search in the left half
                 right = mid - 1;
-            } else {
+            } else { 
                 left = mid + 1;
             }
         }
@@ -99,9 +99,9 @@ int isAnagram(char *inputString1, char *inputString2){
 
     printf("Palavra 1: %s Palavra 2: %s Anagrama? ", inputString1, inputString2); // Print the input strings
 
-    int size = (int)strlen(inputString1);                            // Get the size of the input string
+    int size = (int)strlen(inputString1);                       // Get the size of the input string
 
-    int *array1 = stringToInt(inputString1, size);                    // Convert the input string to an array of integers
+    int *array1 = stringToInt(inputString1, size);              // Convert the input string to an array of integers
     int *array2 = stringToInt(inputString2, size);
 
     binaryInsertionSort(array1, size);                          // Sort the first array using binary insertion sort
