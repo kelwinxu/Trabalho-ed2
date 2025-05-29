@@ -49,9 +49,9 @@ int* recursiveDistinctQuicksort(int* numbers, int size){
     int rightSize = 0;                                  // Size of the right array
 
     for (int i = 0; i < size; i++) {                    // Divide the array into left and right arrays
-        if (numbers[i] < pivot) {                       // Smaller at left
+        if (numbers[i] > pivot) {                       // Greater at left
             left[leftSize++] = numbers[i];              // Increment leftSize as it makes the array
-        } else if (numbers[i] > pivot) {
+        } else if (numbers[i] < pivot) {
             right[rightSize++] = numbers[i];            // Same for right side
         }
     }
@@ -107,33 +107,25 @@ void swap(int* a, int* b) {
     *b = temp;
 }*/
 
-int MoveDisk(int* towerFrom, int* towerTo, int size){
-    int indexFrom;
-    int indexTo;
-    for(int i = 0; i < size; i++){
-        if(towerFrom[i] == -1 && i == size){            //If finds an empty disk slot (or is full)
-            indexFrom = i-1;                            //The previous slot is the last disk (or get the last)
-        }
-
+int MoveDisk(Tower* towerFrom, Tower* towerTo){
+    if(TowerFrom->size < 1 || TowerTo->size == TowerTo->maxSize){
+        if(DEBUG) printf("MoveDisk: invalid movement (Source empty/Destination full)");
+        return 1;      //From empty or To full
     }
-    for(int i = 0; i < size; i++){
-        if(towerTo[i] == -1){                           //If finds an emptry disk slot
-            indexTo = i;                                //Its the slot for the moved disk
-        }
-    }
-    towerTo[indexTo] = towerFrom[indexFrom];            //Move the disk
-    towerFrom[indexFrom] = -1;                          //Set the empty slot as -1
+    towerTo->disk[(towerTo->size)-1] = towerFrom->disk[towerFrom->size];        //Move the disk
+    towerTo->size++;
+    towerFrom->size--;
+    towerFrom[indexFrom] = -1;                                                  //Set the empty slot as -1
+    if(DEBUG) printf("MoveDisk: disk moved successfully");
     return 0;
 }
+int shrinkTower(Tower)
 
-int recursiveSolve(int* from, int* temp, int* to, int size, int* movements, int* A, int* B, int* C){
+int recursiveSolve(Tower* from, Tower* temp, Tower* to, int* movements){
     if(size == 0) return 0;
-    recursiveSolve(from, to, temp, size-1, movements, A, B, C);     //Move smaller (n-1) tower to temp
-        printTowers(A, B, C, size);
-    MoveDisk(from, to, size);                                       //Move the largest Disk to end
-        printTowers(A, B, C, size);
-    recursiveSolve(temp, from, to, size-1, movements, A, B, C);     //Move smaller (n-1) tower to end
-        printTowers(A, B, C, size);
+    recursiveSolve(from, to, temp, size-1, movements);     //Move smaller (n-1) tower to temp
+    MoveDisk(from, to);                                    //Move the largest Disk to end
+    recursiveSolve(temp, from, to, size-1, movements);     //Move smaller (n-1) tower to end
     return 0;
 }
 

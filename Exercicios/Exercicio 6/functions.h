@@ -1,5 +1,6 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
+#define DEBUG 1
 
 //tower struct
 typedef struct Tower_str{
