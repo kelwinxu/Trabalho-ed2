@@ -154,11 +154,11 @@ int printTower(Tower tower, char towerName){
     printf(" ");
     for(int i = 0; i < tower.maxSize; i++){
         if(tower.disk[i] == -1)
-            printf(" _");
+            printf("._");
     }
     for(int i = 0; i < tower.maxSize; i++){
         if(tower.disk[i] != -1)
-            printf(" %d", tower.disk[i]);
+            printf(".%d", tower.disk[i]);
     }
     printf("| Tower %c\n", towerName);
 
