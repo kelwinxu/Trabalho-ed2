@@ -49,9 +49,9 @@ int* recursiveDistinctQuicksort(int* numbers, int size){
     int rightSize = 0;                                  // Size of the right array
 
     for (int i = 0; i < size; i++) {                    // Divide the array into left and right arrays
-        if (numbers[i] > pivot) {                       // Greater at left
+        if (numbers[i] < pivot) {                       // Smaller at left
             left[leftSize++] = numbers[i];              // Increment leftSize as it makes the array
-        } else if (numbers[i] < pivot) {
+        } else if (numbers[i] > pivot) {
             right[rightSize++] = numbers[i];            // Same for right side
         }
     }
@@ -107,50 +107,74 @@ void swap(int* a, int* b) {
     *b = temp;
 }*/
 
+int shiftRight(Tower* tower){
+    for(int i = (tower->maxSize)-2; i >= 0; i--){
+        tower->disk[i+1] = tower->disk[i];
+    }
+    tower->disk[0] = -1;
+    if(DEBUG) printf("  shiftRight (%c)*: successful\n", tower->name);
+    return 0;
+}
+int shiftLeft(Tower* tower){
+    for(int i = 0; i < (tower->maxSize)-1; i++){
+        tower->disk[i] = tower->disk[i+1];
+    }
+    tower->disk[(tower->maxSize)-1] = -1;
+    if(DEBUG) printf("  shiftLeft (%c)*: successful\n", tower->name);
+    return 0;
+}
+
 int MoveDisk(Tower* towerFrom, Tower* towerTo){
-    if(TowerFrom->size < 1 || TowerTo->size == TowerTo->maxSize){
-        if(DEBUG) printf("MoveDisk: invalid movement (Source empty/Destination full)");
-        return 1;      //From empty or To full
+    if(DEBUG) printf("MoveDisk: from %c to %c\n", towerFrom->name, towerTo->name);
+    if(towerFrom->size < 1 || towerTo->size == towerTo->maxSize){
+        if(DEBUG) printf("MoveDisk*: invalid movement (Source empty/Destination full)\n");
+        return 1;                                   //towerFrom empty or towerTo full
     }
-    towerTo->disk[(towerTo->size)-1] = towerFrom->disk[towerFrom->size];        //Move the disk
+    shiftRight(towerTo);                            //Moves to create space for the new top disk
+    towerTo->disk[0] = towerFrom->disk[0];          //Copy the new disk to the destination
+    shiftLeft(towerFrom);                           //Erase the disk at the origin
+    towerFrom->size--;                              //Update sizes
     towerTo->size++;
-    towerFrom->size--;
-    towerFrom[indexFrom] = -1;                                                  //Set the empty slot as -1
-    if(DEBUG) printf("MoveDisk: disk moved successfully");
+    if(DEBUG) printf("MoveDisk*: Disk moved successfully\n");
     return 0;
 }
-int shrinkTower(Tower)
 
-int recursiveSolve(Tower* from, Tower* temp, Tower* to, int* movements){
+int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements){
     if(size == 0) return 0;
-    recursiveSolve(from, to, temp, size-1, movements);     //Move smaller (n-1) tower to temp
-    MoveDisk(from, to);                                    //Move the largest Disk to end
-    recursiveSolve(temp, from, to, size-1, movements);     //Move smaller (n-1) tower to end
+    recursiveSolve(towerFrom, towerTo, towerTemp, size-1, movements);      //Move smaller (n-1) tower to temp
+    MoveDisk(towerFrom, towerTo);                                          //Move the largest Disk to end
+    printf("-MOVEMENT %d: (%c -> %c)-\n", ++(*movements), towerFrom->name, towerTo->name);
+    printTowers(*towerFrom, *towerTemp, *towerTo);
+    printf("\n");
+    recursiveSolve(towerTemp, towerFrom, towerTo, size-1, movements);      //Move smaller (n-1) tower to end
     return 0;
 }
 
-int printTowers(int* from, int* temp, int* to, int size){
-    printf("Tower A:");
-    for(int i = 0; i < size; i++){
-        if(from[i] == -1)
+int printTower(Tower tower, char towerName){
+    printf(" ");
+    for(int i = 0; i < tower.maxSize; i++){
+        if(tower.disk[i] == -1)
             printf(" _");
-        else
-            printf(" %d", from[i]);
     }
-    printf("\nTower B:");
-    for(int i = 0; i < size; i++){
-        if(temp[i] == -1)
-            printf(" _");
-        else
-            printf(" %d", temp[i]);
+    for(int i = 0; i < tower.maxSize; i++){
+        if(tower.disk[i] != -1)
+            printf(" %d", tower.disk[i]);
     }
-    printf("\nTower C:");
-    for(int i = 0; i < size; i++){
-        if(to[i] == -1)
-            printf(" _");
-        else
-            printf(" %d", to[i]);
-    }
-    printf("\n");
+    printf("| Tower %c\n", towerName);
+
+    return 0;
+}
+
+int printTowers(Tower A, Tower B, Tower C){
+    if('A' == A.name) printTower(A, A.name);
+    else if('A' == B.name) printTower(B, B.name);
+    else if('A' == C.name) printTower(C, C.name);
+    if('B' == A.name) printTower(A, A.name);
+    else if('B' == B.name) printTower(B, B.name);
+    else if('B' == C.name) printTower(C, C.name);
+    if('C' == A.name) printTower(A, A.name);
+    else if('C' == B.name) printTower(B, B.name);
+    else if('C' == C.name) printTower(C, C.name);
+    
     return 0;
 }
