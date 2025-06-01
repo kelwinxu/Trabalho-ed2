@@ -4,7 +4,7 @@
 #define DEBUG_QUICKSORT 0   //Debug for Quicksort function
 #define DEBUG_HEAPSORT 1    //Debug for Heapsort function
 #define DEBUG_MOVEDISK 0    //Debug for MoveDisk function (and shifts)
-#define DEBUG_HANOI 0       //Debug for RecursiveSolve function
+#define DEBUG_HANOI 1       //Debug for RecursiveSolve function
 //tower struct
 typedef struct Tower_str{
 char name;                  //Name for debug and print purposes
@@ -19,10 +19,16 @@ int *disk;                  //List of disks by weight, from top to bottom
     int* recursiveDistinctQuicksort(int* numbers, int size);
     //Recursive function for quicksort algorithm with distinct numbers
     int* recursiveDistinctQuicksortInternal(int* numbers, int size, int depth);
+    //Recursive heapsort wrapper
+    void recursiveHeapSort(int* numbers, int size);
+    //Recursive function setup
+    void setupRecursiveHeapsort(int* numbers, int i, int size);
     //Recursive function for heap algorithm
-    int* recursiveHeapsort(int* numbers);
+    void recursiveHeapsortInternal(int* numbers, int size);
+    //Order the array with heapify rules
     void heapify(int* numbers, int size, int i);
-    void swap(int* a, int* b);
+    //Swap two numbers in array
+    void swap(int *a, int *b);
 
 //Disk/Tower manipulation
     //Creates an empty (-1) tower, returns the empty tower

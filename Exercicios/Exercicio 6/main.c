@@ -21,7 +21,7 @@ int main() {
     Tower B = createEmptyTower('B', MAX_SIZE);  //Tower B: temp tower
     Tower C = createEmptyTower('C', MAX_SIZE);  //Tower C: output tower                                   
 
-    recursiveDistinctQuicksort(A.disk, MAX_SIZE);
+    recursiveHeapSort(A.disk, MAX_SIZE);
 
     recursiveSolve(&A, &B, &C, MAX_SIZE, &movements);
     

@@ -47,29 +47,29 @@ int* recursiveDistinctQuicksort(int* numbers, int size){
 }
 
 int* recursiveDistinctQuicksortInternal(int* numbers, int size, int depth){
-    if (size <= 1) {                                    // Stop condition: if the array has 1 or 0 elements, it's already sorted
+    if (size <= 1) {                                    //Stop condition: if the array has 1 or 0 elements, it's already sorted
         if(DEBUG_QUICKSORT) printf("Number %d sorted!\n", numbers[0]);
         return numbers;
     }
-    int pivot = numbers[0];                             // Pivot element (first element)
-    int* left = (int*)malloc(sizeof(int) * size);       // Alloc memory for the left array
-    int* right = (int*)malloc(sizeof(int) * size);      // Alloc memory for the right array
+    int pivot = numbers[0];                             //Pivot element (first element)
+    int* left = (int*)malloc(sizeof(int) * size);       //Alloc memory for the left array
+    int* right = (int*)malloc(sizeof(int) * size);      //Alloc memory for the right array
     if(left == NULL || right == NULL){
         if(DEBUG_MEMORY) printf("Quicksort: Memory Allocation failed!");
         return NULL;
     }
-    int leftSize = 0;                                   // Size of the left array
-    int rightSize = 0;                                  // Size of the right array
+    int leftSize = 0;                                   //Size of the left array
+    int rightSize = 0;                                  //Size of the right array
 
     if(DEBUG_QUICKSORT) printf("Array (depth = %d): ", depth);
     if(DEBUG_QUICKSORT) for(int i = 0; i < size; i++) printf("%d ", numbers[i]);
     if(DEBUG_QUICKSORT) printf("-> Pivot chosen: %d\n", pivot);
 
-    for (int i = 1; i < size; i++) {                    // Divide the array into left and right arrays (not include pivot, i != 0)
-        if (numbers[i] < pivot) {                       // Smaller at left
-            left[leftSize++] = numbers[i];              // Increment leftSize as it makes the array
+    for (int i = 1; i < size; i++) {                    //Divide the array into left and right arrays (not include pivot, i != 0)
+        if (numbers[i] < pivot) {                       //Smaller at left
+            left[leftSize++] = numbers[i];              //Increment leftSize as it makes the array
         } else if (numbers[i] > pivot) {
-            right[rightSize++] = numbers[i];            // Same for right side
+            right[rightSize++] = numbers[i];            //Same for right side
         }
     }
 
@@ -79,58 +79,80 @@ int* recursiveDistinctQuicksortInternal(int* numbers, int size, int depth){
     if(DEBUG_QUICKSORT) for(int i = 0; i < rightSize; i++) printf("%d ", right[i]);
 
     if(DEBUG_QUICKSORT) printf("\nSorting left:\n");
-    left = recursiveDistinctQuicksortInternal(left, leftSize, depth+1);              // Recursively sort the left array
+    left = recursiveDistinctQuicksortInternal(left, leftSize, depth+1);              //Recursively sort the left array
     if(DEBUG_QUICKSORT) printf("Sorting right:\n");
-    right = recursiveDistinctQuicksortInternal(right, rightSize, depth+1);           // Recursively sort the right array
+    right = recursiveDistinctQuicksortInternal(right, rightSize, depth+1);           //Recursively sort the right array
 
-    for (int i = 0; i < leftSize; i++) {                // Copy the sorted left array back to the original array
+    for (int i = 0; i < leftSize; i++) {                //Copy the sorted left array back to the original array
         numbers[i] = left[i];
     }
-    numbers[leftSize] = pivot;                          // Insert the pivot element in the middle
-    for (int i = 0; i < rightSize; i++) {               // Copy the sorted right array back to the original array
+    numbers[leftSize] = pivot;                          //Insert the pivot element in the middle
+    for (int i = 0; i < rightSize; i++) {               //Copy the sorted right array back to the original array
         numbers[leftSize + 1 + i] = right[i];
     }
 
-    free(left);                                         // Free memory
+    free(left);                                         //Free memory
     free(right);
 
     return numbers;
 }
 
-/*BROKEN
-int* recursiveHeapsort(int* numbers, int size){
-    for (int i = size / 2 - 1; i >= 0; i--) {           // Build the heap
-        heapify(numbers, size, i);
-    }
-    for (int i = size - 1; i > 0; i--) {                // Extract elements from the heap
-        swap(&numbers[0], &numbers[i]);
-        heapify(numbers, i, 0);
-    }
-    return numbers;
+/*General algorithm idea (Recurive Heap sort):
+Heapify representation (example):
+          0             Father node: min((i-1)/2) [(2-1)/2 = 0]
+        /   \
+      1       2         Current node: i [2]
+     / \     / \
+    3   4   5   6       Child nodes: i*2+1, i*2+2 [5,6]
+   | | | | | | | | 
+   7 8 9 a b c d e      (*hexadecimal)
+
+Heapify Pseudocode iteractive (example)
+[4 10 3 5 1]
+i = (size/2)-1 = 5/2-1 = 1      //Get the last node with child nodes
+node: 10 -> childs: 5, 1
+10 > 5 & 10 > 1, all right
+i--
+node: 4 -> childs: 10, 3
+4 > 10 -> swap
+4 > 3 -> all right
+*/
+
+void recursiveHeapSort(int* numbers, int size){
+    setupRecursiveHeapsort(numbers, size / 2 - 1, size);
+    recursiveHeapsortInternal(numbers, size);
 }
 
-void heapify(int* numbers, int size, int i) {
-    int largest = i;                                    // Initialize largest as root
-    int left = 2 * i + 1;                               // left child index
-    int right = 2 * i + 2;                              // right child index
-
-    if (left < size && numbers[left] > numbers[largest]) {      // If left child is larger than root
-        largest = left;
-    }
-    if (right < size && numbers[right] > numbers[largest]) {    // If right child is larger than largest so far
-        largest = right;
-    }
-    if (largest != i) {                                 // If largest is not root
-        swap(&numbers[i], &numbers[largest]);           // Swap root with largest
-        heapify(numbers, size, largest);                // Recursively heapify the affected sub-tree
-    }
+void setupRecursiveHeapsort(int* numbers, int i, int size) {
+    if (i < 0) return;
+    heapify(numbers, i, size);                          //Heapify array
+    setupRecursiveHeapsort(numbers, i - 1, size);       //Repeat with the rest
 }
 
-void swap(int* a, int* b) {
-    int temp = *a;                                      // Swap the values of a and b
+void recursiveHeapsortInternal(int* numbers, int size) {
+    if (size <= 1) return;                              //Stop condition: if the array has 1 or 0 elements, it's already sorted
+    swap(&numbers[0], &numbers[size - 1]);              //Swap largest number to end
+    heapify(numbers, 0, size - 1);                      //Adjust the i-1 heap
+    recursiveHeapsortInternal(numbers, size - 1);       //Repeat with the rest
+}
+void swap(int *a, int *b){
+    int temp = *a;
     *a = *b;
     *b = temp;
-}*/
+}
+void heapify(int* numbers, int index, int size){
+    if(size == 0) return;
+    if(numbers[index*2+1] > numbers[index] && index*2+1<size){
+        swap(&numbers[index*2+1], &numbers[index]);
+        heapify(numbers, index*2+1, size);
+    }
+    if(numbers[index*2+2] > numbers[index] && index*2+2<size){
+        swap(&numbers[index*2+2], &numbers[index]);
+        heapify(numbers, index*2+2, size);
+    }
+}
+
+
 
 Tower createEmptyTower(char towerName, int maxSize) {
     Tower tower = {
@@ -211,6 +233,7 @@ A:  _ _ _ _   (Start)
 B:  _ _ _ _   (Temp)
 C:  6 4 2 1   (Target)
 */
+
 int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements){
     if(DEBUG_HANOI) printf("=Solving Hanoi Tower for %c, %c, %c=\n", towerFrom->name,towerTemp->name,towerTo->name);
     int returnValue = recursiveSolveInternal(towerFrom, towerTemp, towerTo, size, movements);
@@ -222,9 +245,10 @@ int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size,
 int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements){
     if(size == 0) return 0;
     recursiveSolveInternal(towerFrom, towerTo, towerTemp, size-1, movements);               //Move smaller (n-1) tower to temp
-    MoveDisk(towerFrom, towerTo);                                                           //Move the largest Disk to end
 
-    printf("-MOVEMENT %d: (%c -> %c)-\n", ++(*movements), towerFrom->name, towerTo->name);  //Print the movement, and add to the counter
+    printf("-MOVEMENT %d: (Towers: %c[%d] -> %c[%d] / weight = %d)-\n", ++(*movements), towerFrom->name, (towerFrom->size)-1, towerTo->name, towerTo->size, towerFrom->disk[0]);  //Print the movement, and add to the counter
+
+    MoveDisk(towerFrom, towerTo);                                                           //Move the largest Disk to end
     if(DEBUG_HANOI) printTowersABC(*towerFrom, *towerTemp, *towerTo);
     if(DEBUG_HANOI) printf("\n");
 
