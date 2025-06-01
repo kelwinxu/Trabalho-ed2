@@ -18,5 +18,5 @@ vem trabalhar 😭😭
  
  >ex6. ?
 
- >ex7. ?
+ >ex7. uma dia essa miseria sai, (10-20%)
 
