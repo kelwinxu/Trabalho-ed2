@@ -1,0 +1,67 @@
+# depslib dependency file v1.0
+1746704241 source:c:\users\15507802\desktop\trabalho ed2\trabalho-exercicio1\exercicio1.c
+
+1746716454 source:c:\users\15507802\desktop\trabalho ed2\trabalho-exercicio1\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1747848185 
+
+1747307789 source:c:\users\15507802\downloads\trabalho-exercicio1-20250515t111612z-1-001\trabalho-exercicio1\exercicio1.c
+
+1747315284 source:c:\users\15507802\downloads\trabalho-exercicio1-20250515t111612z-1-001\trabalho-exercicio1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1747842110 source:c:\users\15507802\downloads\trabalho-exercicio1-20250521t154129z-1-001\trabalho-exercicio1\exercicio1.c
+
+1747848185 source:c:\users\15507802\downloads\trabalho-exercicio1-20250521t154129z-1-001\trabalho-exercicio1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1747922879 source:c:\users\15507802\downloads\trabalho-exercicio1-20250522t112121z-1-001\trabalho-exercicio1\exercicio1.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"exercicio1.h"
+
+1747922919 1.h"
+
+1747922919 source:c:\users\15507802\downloads\trabalho-exercicio1-20250522t112121z-1-001\trabalho-exercicio1\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"exercicio1.h"
+
+1747921816 c:\users\15507802\downloads\trabalho-exercicio1-20250522t112121z-1-001\trabalho-exercicio1\exercicio1.h
+
+1748643483 source:/home/joel/Desktop/trabalho-exercicio1.2/exercicio1.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"exercicio1.h"
+
+1747921816 /home/joel/Desktop/trabalho-exercicio1.2/exercicio1.h
+
+1748642988 source:/home/joel/Desktop/trabalho-exercicio1.2/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"exercicio1.h"
+
+1748903571 source:/home/joel/Desktop/trabalho-exercicio1.3/exercicio1.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"exercicio1.h"
+
+1747921816 /home/joel/Desktop/trabalho-exercicio1.3/exercicio1.h
+
+1748642988 source:/home/joel/Desktop/trabalho-exercicio1.3/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"exercicio1.h"
+
