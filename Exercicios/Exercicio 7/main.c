@@ -7,16 +7,16 @@
 #define MAX_SOLUCOES 100000
 
 int chamadas_recursivas = 0;
-int n; // Número de rainhas
+int n; // Nï¿½mero de rainhas
 
 typedef struct {
-    int posicoes[MAX_N]; // índice = coluna, valor = linha
+    int posicoes[MAX_N]; // ï¿½ndice = coluna, valor = linha
 } Solucao;
 
 Solucao solucoes[MAX_SOLUCOES];
 int total_solucoes = 0;
 
-/// Marcações para linhas e diagonais
+/// Marcaï¿½ï¿½es para linhas e diagonais
 bool linha_ocupada[MAX_N];
 bool diagonal_principal_ocupada[2 * MAX_N];
 bool diagonal_secundaria_ocupada[2 * MAX_N];
