@@ -44,9 +44,9 @@ int *disk;                  //List of disks by weight, from top to bottom
     //Prints the three towers
     int printTowers(Tower A, Tower B, Tower C);
     //RecursiveSolveInternal wrapper
-    int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements);
+    int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements, int* weightMoved);
     //Solve the tower of hanoi
-    int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements);
+    int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements, int* weightMoved);
 
 //Debug/Print purposes
     //Prints the tower array

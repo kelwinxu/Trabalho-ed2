@@ -104,10 +104,11 @@ Heapify representation (example):
       1       2         Current node: i [2]
      / \     / \
     3   4   5   6       Child nodes: i*2+1, i*2+2 [5,6]
-   | | | | | | | | 
-   7 8 9 a b c d e      (*hexadecimal)
+   | | | | | | | |
+   7 8 9 a b c d e      > Array equivalent: [0,1,2,3,4,5,6,7,8,9,a,b,c,d,e]
+   Note: all elements with index higher than size/2-1 are leaf nodes (7 to e)
 
-Heapify Pseudocode iteractive (example)
+Heapify Pseudocode iteractive (example) -> from bottom up
 [4 10 3 5 1]
 i = (size/2)-1 = 5/2-1 = 1      //Get the last node with child nodes
 node: 10 -> childs: 5, 1
@@ -116,11 +117,21 @@ i--
 node: 4 -> childs: 10, 3
 4 > 10 -> swap
 4 > 3 -> all right
+
+Heapify Pseudocode recursive (example) -> from top down (repeated for every node from botton up)
+[4 10 3 5 1]
+i = (size/2)-1 = 5/2-1 = 1
+node: 10 -> childs: 5, 1
+10 > 5 & 10 > 1, all right
+i--
+node: 4 -> childs: 10, 3
+4 > 10 -> swap -> reapsort on child
+4 > 3 -> all right
 */
 
 void recursiveHeapSort(int* numbers, int size){
-    setupRecursiveHeapsort(numbers, size / 2 - 1, size);
-    recursiveHeapsortInternal(numbers, size);
+    setupRecursiveHeapsort(numbers, size / 2 - 1, size);    //First build heap (for every non-leaf nodes)
+    recursiveHeapsortInternal(numbers, size);               //Then solve recursion
 }
 
 void setupRecursiveHeapsort(int* numbers, int i, int size) {
@@ -136,30 +147,28 @@ void recursiveHeapsortInternal(int* numbers, int size) {
     recursiveHeapsortInternal(numbers, size - 1);       //Repeat with the rest
 }
 void swap(int *a, int *b){
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+    int temp = *a;                                      //Store
+    *a = *b;                                            //Overwrite
+    *b = temp;                                          //Backup
 }
 void heapify(int* numbers, int index, int size){
     if(size == 0) return;
-    if(numbers[index*2+1] > numbers[index] && index*2+1<size){
-        swap(&numbers[index*2+1], &numbers[index]);
-        heapify(numbers, index*2+1, size);
+    if(numbers[index*2+1] > numbers[index] && index*2+1<size){  //If left child is bigger, and it exists
+        swap(&numbers[index*2+1], &numbers[index]);             //Swap the parent with the child
+        heapify(numbers, index*2+1, size);                      //Repeat on child's node
     }
-    if(numbers[index*2+2] > numbers[index] && index*2+2<size){
-        swap(&numbers[index*2+2], &numbers[index]);
-        heapify(numbers, index*2+2, size);
+    if(numbers[index*2+2] > numbers[index] && index*2+2<size){  //If right child is bigger, and it exists
+        swap(&numbers[index*2+2], &numbers[index]);             //Swap the parent with the child
+        heapify(numbers, index*2+2, size);                      //Repeat on child's node
     }
 }
-
-
 
 Tower createEmptyTower(char towerName, int maxSize) {
     Tower tower = {
         .disk = malloc(sizeof(int) * maxSize),      //Allocs the array
         .size = 0,                                  //Default to 0
-        .maxSize = maxSize,
-        .name = towerName
+        .maxSize = maxSize,                         //Set size of array
+        .name = towerName                           //Set name
     };
     if(tower.disk == NULL && DEBUG_MEMORY) printf("CreateEmptyTower: Memory Allocation failed!");
     for(int i = 0; i < maxSize; i++) {
@@ -234,17 +243,19 @@ B:  _ _ _ _   (Temp)
 C:  6 4 2 1   (Target)
 */
 
-int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements){
+int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements, int* weightMoved){
     if(DEBUG_HANOI) printf("=Solving Hanoi Tower for %c, %c, %c=\n", towerFrom->name,towerTemp->name,towerTo->name);
-    int returnValue = recursiveSolveInternal(towerFrom, towerTemp, towerTo, size, movements);
+    int returnValue = recursiveSolveInternal(towerFrom, towerTemp, towerTo, size, movements, weightMoved);
     if(DEBUG_HANOI) printf("=Hanoi Tower Solved!=\nresult:\n");
     if(DEBUG_HANOI) printTowersABC(*towerFrom, *towerTemp, *towerTo);
     return returnValue;
 }
 
-int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements){
+int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements, int* weightMoved){
     if(size == 0) return 0;
-    recursiveSolveInternal(towerFrom, towerTo, towerTemp, size-1, movements);               //Move smaller (n-1) tower to temp
+    recursiveSolveInternal(towerFrom, towerTo, towerTemp, size-1, movements, weightMoved);               //Move smaller (n-1) tower to temp
+
+    *weightMoved += towerFrom->disk[0];
 
     printf("-MOVEMENT %d: (Towers: %c[%d] -> %c[%d] / weight = %d)-\n", ++(*movements), towerFrom->name, (towerFrom->size)-1, towerTo->name, towerTo->size, towerFrom->disk[0]);  //Print the movement, and add to the counter
 
@@ -252,7 +263,7 @@ int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, i
     if(DEBUG_HANOI) printTowersABC(*towerFrom, *towerTemp, *towerTo);
     if(DEBUG_HANOI) printf("\n");
 
-    recursiveSolveInternal(towerTemp, towerFrom, towerTo, size-1, movements);      //Move smaller (n-1) tower to end
+    recursiveSolveInternal(towerTemp, towerFrom, towerTo, size-1, movements, weightMoved);      //Move smaller (n-1) tower to end
     return 0;
 }
 
