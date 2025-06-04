@@ -3,6 +3,8 @@
 #include <string.h>
 #define MAX_N 20
 #define MAX_SOLUCOES 100000
+int flag;
+int n;
 void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     if (*flag == 0 || i == n) return;
     if (a[i] != b[i]) {
@@ -11,6 +13,13 @@ void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     }
     sao_iguais_rec(a, b, i + 1, flag);
 }
+
+typedef struct {
+    int posicoes[MAX_N];
+} Solucao;
+
+Solucao solucoes[MAX_SOLUCOES];
+int total_solucoes = 0;
 
 ///Faz matriz indentidade recursivamente
 void copiar_identidade_rec(int *original, int *destino, int i) {
@@ -121,11 +130,19 @@ int solucao_e_unica(int *nova) {
 
 
 /// Exibe vetor da solu��o
-void exibir_solucao(int *tabuleiro) {
-    printf("[");
-    for (int i = 0; i < n; i++) {
-        printf("%d", tabuleiro[i]);
-        if (i < n - 1) printf(", ");
+void exibir_solucao_rec(int *tabuleiro, int i){
+    if (i == n){
+        printf("]\n");
+        return;
     }
-    printf("]\n");
+    printf("%d", tabuleiro[i]);
+    if(i < n - 1) printf(",");
+    exibir_solucao_rec(tabuleiro, i + 1);  // ✅ chamada correta
 }
+
+void exibir_solucao(int *tabuleiro){
+    printf("[");
+    exibir_solucao_rec(tabuleiro, 0);
+}
+
+///O diabo vai temer isso
