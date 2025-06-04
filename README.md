@@ -18,5 +18,6 @@ vem trabalhar 😭😭
  
  >ex6. ?
 
- >ex7. uma dia essa miseria sai, (10-20%)
+ >ex7. uma dia essa miseria sai, (65%)+-, falta só o backtracking, Contar todas as soluções válidas,Escolha dinâmica de n
+
 
