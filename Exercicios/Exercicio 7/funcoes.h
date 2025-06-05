@@ -1,7 +1,7 @@
 #ifndef FUNCOES_H_INCLUDED
 #define FUNCOES_H_INCLUDED
 #define MAX_N 20 ///O programa simplemente da overflow entre 13-15
-#define MAX_SOLUCOES 100000
+#define MAX_SOLUCOES 10000000
 ///Struct
 typedef struct {
     int posicoes[MAX_N];

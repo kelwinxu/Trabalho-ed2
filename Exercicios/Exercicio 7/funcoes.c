@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define MAX_N 20 ///O programa simplemente da overflow entre 13-15
-#define MAX_SOLUCOES 100000
+#define MAX_SOLUCOES 10000000
 #include "funcoes.h"
 
 ///Ver depois useu busca com retocesso
@@ -37,59 +37,103 @@ então estou invertendo por exemplo coluna <-> linha
 se pensar geometricamente faz mais sentido
 */
 ///------------FIM explicação----------------------------
-/// Rotação de 90 graus
-void rotacao_90_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[original[i]] = n - 1 - i;
-    rotacao_90_rec(original, destino, i + 1);
-}
-/// Rotação de 180 graus
-void rotacao_180_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[n - 1 - i] = n - 1 - original[i];
-    rotacao_180_rec(original, destino, i + 1);
-}
-/// Rotação de 270 graus
-void rotacao_270_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[n - 1 - original[i]] = i;
-    rotacao_270_rec(original, destino, i + 1);
-}
-/// reflexo horizontal
-void reflexo_horizontal_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[i] = n - 1 - original[i];
-    reflexo_horizontal_rec(original, destino, i + 1);
-}
-/// reflexo vertical
-void reflexo_vertical_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[n - 1 - i] = original[i];
-    reflexo_vertical_rec(original, destino, i + 1);
+///Por divisão e conquista
+// Rotação 90 graus
+void rotacao_90_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[original[inicio]] = n - 1 - inicio;
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    rotacao_90_divide_conquista(original, destino, inicio, meio);
+    rotacao_90_divide_conquista(original, destino, meio + 1, fim);
 }
 
-void diagonal_principal_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[original[i]] = i;
-    diagonal_principal_rec(original, destino, i + 1);
+// Rotação 180 graus
+void rotacao_180_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[n - 1 - inicio] = n - 1 - original[inicio];
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    rotacao_180_divide_conquista(original, destino, inicio, meio);
+    rotacao_180_divide_conquista(original, destino, meio + 1, fim);
 }
 
-void diagonal_secundaria_rec(int *original, int *destino, int i) {
-    if (i == n) return;
-    destino[n - 1 - original[i]] = n - 1 - i;
-    diagonal_secundaria_rec(original, destino, i + 1);
+// Rotação 270 graus
+void rotacao_270_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[n - 1 - original[inicio]] = inicio;
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    rotacao_270_divide_conquista(original, destino, inicio, meio);
+    rotacao_270_divide_conquista(original, destino, meio + 1, fim);
 }
+
+// Reflexo horizontal
+void reflexo_horizontal_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[inicio] = n - 1 - original[inicio];
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    reflexo_horizontal_divide_conquista(original, destino, inicio, meio);
+    reflexo_horizontal_divide_conquista(original, destino, meio + 1, fim);
+}
+
+// Reflexo vertical
+void reflexo_vertical_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[n - 1 - inicio] = original[inicio];
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    reflexo_vertical_divide_conquista(original, destino, inicio, meio);
+    reflexo_vertical_divide_conquista(original, destino, meio + 1, fim);
+}
+
+// Diagonal principal
+void diagonal_principal_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[original[inicio]] = inicio;
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    diagonal_principal_divide_conquista(original, destino, inicio, meio);
+    diagonal_principal_divide_conquista(original, destino, meio + 1, fim);
+}
+
+// Diagonal secundária
+void diagonal_secundaria_divide_conquista(int *original, int *destino, int inicio, int fim) {
+    if (inicio > fim) return;
+    if (inicio == fim) {
+        destino[n - 1 - original[inicio]] = n - 1 - inicio;
+        return;
+    }
+    int meio = (inicio + fim) / 2;
+    diagonal_secundaria_divide_conquista(original, destino, inicio, meio);
+    diagonal_secundaria_divide_conquista(original, destino, meio + 1, fim);
+}
+
 ///Top 10 gambiarras do ano, puro algelin (teorizado não totalmente)
 void gerar_transformacoes(int *original, int transformacoes[8][MAX_N]) {
     copiar_identidade_rec(original, transformacoes[0], 0);
-    rotacao_90_rec(original, transformacoes[1], 0);
-    rotacao_180_rec(original, transformacoes[2], 0);
-    rotacao_270_rec(original, transformacoes[3], 0);
-    reflexo_horizontal_rec(original, transformacoes[4], 0);
-    reflexo_vertical_rec(original, transformacoes[5], 0);
-    diagonal_principal_rec(original, transformacoes[6], 0);
-    diagonal_secundaria_rec(original, transformacoes[7], 0);
+    rotacao_90_divide_conquista(original, transformacoes[1], 0, n - 1);
+    rotacao_180_divide_conquista(original, transformacoes[2], 0, n - 1);
+    rotacao_270_divide_conquista(original, transformacoes[3], 0, n - 1);
+    reflexo_horizontal_divide_conquista(original, transformacoes[4], 0, n - 1);
+    reflexo_vertical_divide_conquista(original, transformacoes[5], 0, n - 1);
+    diagonal_principal_divide_conquista(original, transformacoes[6], 0, n - 1);
+    diagonal_secundaria_divide_conquista(original, transformacoes[7], 0, n - 1);
 }
+
 ///Comparação com flag + recusiva (não sei se presisava)
 // Verifica recursivamente se nova solução é igual a alguma transformação
 

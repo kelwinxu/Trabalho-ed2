@@ -1,70 +1,34 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <windows.h>
-#include <conio.h>
+#include <string.h>
 #include "funcoes.h"
 
-#define MAX_N 20 ///O programa simplemente da overflow entre 13-15
+#define MAX_N 20
 
-/// Protótipos
 int n = 0;
 void resolver(int linha, int *tabuleiro);
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     int tabuleiro[MAX_N];
     char buffer[16];
-    int tecla_pressionada = 0;
 
-    while (_kbhit()) _getch(); // limpar buffer
+    //printf("Digite o valor de N (ou apenas ENTER para modo automático): ");
 
-    for (int i = 0; i < 10; i++)
-    {
-        //printf("%d...\n", i);
-        if (_kbhit())
-        {
-            tecla_pressionada = 1;
-            break;
-        }
-        Sleep(1000);
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+        printf("Erro ao ler entrada.\n");
+        return 1;
     }
 
-    if (tecla_pressionada)
-    {
-        // Leitura da linha inteira para aceitar valores maiores que 9
-        printf("Digite o valor de N (1-%d): ", MAX_N);
-        if (fgets(buffer, sizeof(buffer), stdin) != NULL)
-        {
-            n = atoi(buffer);
-            if (n < 1 || n > MAX_N)
-            {
-                printf("Valor de N invalido.\n");
-                return 1;
-            }
+    // Remove o \n do final da string
+    buffer[strcspn(buffer, "\n")] = '\0';
 
-            total_solucoes = 0;
-            chamadas_recursivas = 0;
-            //printf("\nExecutando para N = %d (entrada do usuário)\n", n);
-            resolver(0, tabuleiro);
-            printf("Total de solucoes unicas: %d\n", total_solucoes);
-            printf("Chamadas recursivas: %d\n", chamadas_recursivas);
-            return 0;
-        }
-        else
-        {
-            printf("Erro ao ler entrada.\n");
-            return 1;
-        }
-    }
-    else
-    {
+    if (buffer[0] == '\0') {
+        // Modo automático
         printf("Iniciando Execucao auto...\n");
 
-        if (argc == 2)
-        {
+        if (argc == 2) {
             n = atoi(argv[1]);
-            if (n <= 0 || n > MAX_N)
-            {
+            if (n <= 0 || n > MAX_N) {
                 printf("Valor de N invalido.\n");
                 return 1;
             }
@@ -79,12 +43,9 @@ int main(int argc, char *argv[])
                 printf("\nTotal de solucoes unicas para n=%d: %d\n", n, total_solucoes);
 
             printf("Chamadas recursivas: %d\n", chamadas_recursivas);
-        }
-        else
-        {
+        } else {
             int testes[] = {4, 8};
-            for (int i = 0; i < 2; i++)
-            {
+            for (int i = 0; i < 2; i++) {
                 n = testes[i];
                 total_solucoes = 0;
                 chamadas_recursivas = 0;
@@ -99,6 +60,19 @@ int main(int argc, char *argv[])
                 printf("Chamadas recursivas: %d\n", chamadas_recursivas);
             }
         }
+    } else {
+        // Conversão e validação
+        n = atoi(buffer);
+        if (n < 1 || n > MAX_N) {
+            printf("Valor de N invalido.\n");
+            return 1;
+        }
+
+        total_solucoes = 0;
+        chamadas_recursivas = 0;
+        resolver(0, tabuleiro);
+        printf("Total de solucoes unicas: %d\n", total_solucoes);
+        printf("Chamadas recursivas: %d\n", chamadas_recursivas);
     }
 
     return 0;
