@@ -1,44 +1,105 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+#include <windows.h>
+#include <conio.h>
 #include "funcoes.h"
 
-#define MAX_N 20
-#define MAX_SOLUCOES 100000
+#define MAX_N 20 ///O programa simplemente da overflow entre 13-15
 
-int main() {
-    int n = 8; // Tamanho do tabuleiro (por exemplo, 8x8)
+/// Protótipos
+int n = 0;
+void resolver(int linha, int *tabuleiro);
 
-    // Testando uma nova solução qualquer
-    int nova_solucao[MAX_N] = {0,4,7,5,2,6,1,3}; // Solução conhecida para 8 rainhas
+int main(int argc, char *argv[])
+{
+    int tabuleiro[MAX_N];
+    char buffer[16];
+    int tecla_pressionada = 0;
 
-    if (solucao_e_unica(nova_solucao)) {
-        printf("Solucao e unica. Armazenando...\n");
+    while (_kbhit()) _getch(); // limpar buffer
 
-        // Armazena a nova solução
-        copiar_identidade_rec(nova_solucao, solucoes[total_solucoes].posicoes, 0);
-        total_solucoes++;
-
-        exibir_solucao(nova_solucao); // Mostra a solução
-    } else {
-        printf("Solucao ja existe (simetrica).\n");
+    for (int i = 0; i < 10; i++)
+    {
+        //printf("%d...\n", i);
+        if (_kbhit())
+        {
+            tecla_pressionada = 1;
+            break;
+        }
+        Sleep(1000);
     }
 
-    // Testando uma simétrica (espelho horizontal, por exemplo)
-    int espelho[MAX_N];
-    reflexo_horizontal_rec(nova_solucao, espelho, 0);
+    if (tecla_pressionada)
+    {
+        // Leitura da linha inteira para aceitar valores maiores que 9
+        printf("Digite o valor de N (1-%d): ", MAX_N);
+        if (fgets(buffer, sizeof(buffer), stdin) != NULL)
+        {
+            n = atoi(buffer);
+            if (n < 1 || n > MAX_N)
+            {
+                printf("Valor de N invalido.\n");
+                return 1;
+            }
 
-    if (solucao_e_unica(espelho)) {
-        printf("Espelho e unico. Armazenando...\n");
-        copiar_identidade_rec(espelho, solucoes[total_solucoes].posicoes, 0);
-        total_solucoes++;
+            total_solucoes = 0;
+            chamadas_recursivas = 0;
+            //printf("\nExecutando para N = %d (entrada do usuário)\n", n);
+            resolver(0, tabuleiro);
+            printf("Total de solucoes unicas: %d\n", total_solucoes);
+            printf("Chamadas recursivas: %d\n", chamadas_recursivas);
+            return 0;
+        }
+        else
+        {
+            printf("Erro ao ler entrada.\n");
+            return 1;
+        }
+    }
+    else
+    {
+        printf("Iniciando Execucao auto...\n");
 
-        exibir_solucao(espelho);
-    } else {
-        printf("Espelho ja existe (simetrico de uma solucao anterior).\n");
+        if (argc == 2)
+        {
+            n = atoi(argv[1]);
+            if (n <= 0 || n > MAX_N)
+            {
+                printf("Valor de N invalido.\n");
+                return 1;
+            }
+
+            total_solucoes = 0;
+            chamadas_recursivas = 0;
+            resolver(0, tabuleiro);
+
+            if (total_solucoes == 0)
+                printf("Nao ha solucao para %d rainhas.\n", n);
+            else
+                printf("\nTotal de solucoes unicas para n=%d: %d\n", n, total_solucoes);
+
+            printf("Chamadas recursivas: %d\n", chamadas_recursivas);
+        }
+        else
+        {
+            int testes[] = {4, 8};
+            for (int i = 0; i < 2; i++)
+            {
+                n = testes[i];
+                total_solucoes = 0;
+                chamadas_recursivas = 0;
+                printf("\nTestando para N = %d:\n", n);
+                resolver(0, tabuleiro);
+
+                if (total_solucoes == 0)
+                    printf("Nao ha solucao para %d rainhas.\n", n);
+                else
+                    printf("Total de solucoes unicas: %d\n", total_solucoes);
+
+                printf("Chamadas recursivas: %d\n", chamadas_recursivas);
+            }
+        }
     }
 
     return 0;
 }
-

@@ -1,10 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_N 20
+#define MAX_N 20 ///O programa simplemente da overflow entre 13-15
 #define MAX_SOLUCOES 100000
+#include "funcoes.h"
+
+///Ver depois useu busca com retocesso
 int flag;
 int n;
+int chamadas_recursivas = 0; ///Para contar as chamadas
 void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     if (*flag == 0 || i == n) return;
     if (a[i] != b[i]) {
@@ -13,10 +17,6 @@ void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     }
     sao_iguais_rec(a, b, i + 1, flag);
 }
-
-typedef struct {
-    int posicoes[MAX_N];
-} Solucao;
 
 Solucao solucoes[MAX_SOLUCOES];
 int total_solucoes = 0;
@@ -137,7 +137,7 @@ void exibir_solucao_rec(int *tabuleiro, int i){
     }
     printf("%d", tabuleiro[i]);
     if(i < n - 1) printf(",");
-    exibir_solucao_rec(tabuleiro, i + 1);  // ✅ chamada correta
+    exibir_solucao_rec(tabuleiro, i + 1);  //  chamada correta
 }
 
 void exibir_solucao(int *tabuleiro){
@@ -146,3 +146,35 @@ void exibir_solucao(int *tabuleiro){
 }
 
 ///O diabo vai temer isso
+int solucao_parcial_rec(int *tabuleiro, int linha, int k) {
+    if (k == linha) return 1;
+    if (tabuleiro[k] == tabuleiro[linha] || abs(tabuleiro[k] - tabuleiro[linha]) == abs(k - linha))
+        return 0;
+    return solucao_parcial_rec(tabuleiro, linha, k + 1);
+}
+void tentar_colunas(int linha, int *tabuleiro, int coluna) {
+    if (coluna == n) return;
+
+    tabuleiro[linha] = coluna;
+
+    if (solucao_parcial_rec(tabuleiro, linha, 0)) {
+        resolver(linha + 1, tabuleiro);
+    }
+
+    tentar_colunas(linha, tabuleiro, coluna + 1);
+}
+
+///backtracking
+void resolver(int linha, int *tabuleiro) {
+    chamadas_recursivas++;
+    if (linha == n) {
+        if (solucao_e_unica(tabuleiro)) {
+            copiar_identidade_rec(tabuleiro, solucoes[total_solucoes].posicoes, 0);
+            exibir_solucao(tabuleiro);
+            total_solucoes++;
+        }
+        return;
+    }
+    tentar_colunas(linha, tabuleiro, 0);
+}
+
