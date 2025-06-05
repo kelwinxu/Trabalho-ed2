@@ -43,7 +43,7 @@ void *f_carregaarq(char *path){
 return arq;
 }
 ///carrega tabela hash do arquivo txt
-tabela *f_carregatabela(char path[MAX_SIZE]){ // abre o arquivo, e obtem o tamnaho da tabela e a  quantidade de elementos nela, retornando hash carregada
+tabela *f_carregatabela(char *path){ // abre o arquivo, e obtem o tamnaho da tabela e a  quantidade de elementos nela, retornando hash carregada
     char str[MAX_SIZE], *endptr,*endptr2,*token;
     int tam, qtde;
     FILE *arq;
@@ -159,8 +159,8 @@ tabela *f_respalhamento(tabela *hash, int *tamhash){ // recebe o endereço de ta
     return hash2;
 }
 ///insere na tabela hash
-tabela *f_ineserenatabela(char str[MAX_SIZE]){
-    char *token,*path,*endptr,*endptr2,*strsave, str2[MAX_SIZE];
+tabela *f_ineserenatabela(char str[MAX_INPUT]){
+    char *token,*path,*endptr,*endptr2,*strsave, str2[MAX_INPUT];
     tabela *hash;
     FILE *arq;
     int chave, tamhash,qtd;
@@ -168,9 +168,9 @@ tabela *f_ineserenatabela(char str[MAX_SIZE]){
     token = strtok_r(NULL," ",&strsave);    //inseirr
     path = strtok_r(NULL," ",&strsave);     //nome do arquivo path
     arq = f_carregaarq(path);
-    fgets(str2,MAX_SIZE,arq);               // obtem o tamamnho da tabela
+    fgets(str2,MAX_INPUT,arq);               // obtem o tamamnho da tabela
     tamhash = strtol(str2,&endptr,10);
-    fgets(str2,MAX_SIZE,arq);               // qtde de elementos
+    fgets(str2,MAX_INPUT,arq);               // qtde de elementos
     qtd = strtol(str2,&endptr,10);
 
 
@@ -188,7 +188,7 @@ tabela *f_ineserenatabela(char str[MAX_SIZE]){
                 token = strtok_r(NULL,",",&strsave);        //// nome
                 al->nome = malloc(MAX_SIZE*sizeof(char));
                 memcpy(al->nome,token,MAX_SIZE);
-                token = strtok_r(NULL,", \n",&strsave);     //// curso
+                token = strtok_r(NULL,",\n",&strsave);     //// curso
                 al->curso = malloc(MAX_SIZE*sizeof(char));
                 memcpy(al->curso,token,MAX_SIZE);
                 al->allocated = 1;                          //// verifica se a posiçao ja contem um elemento
@@ -219,7 +219,7 @@ tabela *f_ineserenatabela(char str[MAX_SIZE]){
 }
 
 ///insere tabela hash no arquivo de texto
-void f_inserehashnorquivo(tabela *hash,char path[MAX_SIZE]){    //// recebe a tabelha hash pre alocda, e nao necessariamente preenchida, e o nome do arquivo path
+void f_inserehashnorquivo(tabela *hash,char *path){    //// recebe a tabelha hash pre alocda, e nao necessariamente preenchida, e o nome do arquivo path
     char **endptr;
     int tamhash, qtde;
     FILE *arq;
@@ -328,8 +328,8 @@ int f_chave(char nusp[MAX_SIZE],int mod){   ////recebe o numero usp em string, e
 }
 
 ///busca na tabela hash
-void f_buscahash(tabela *hash,char input[MAX_SIZE]){    //// recebe hash, e os numeros usp
-    char *token,*path,*endptr,tam[MAX_SIZE],*strsave,str[100];
+void f_buscahash(tabela *hash,char input[MAX_INPUT]){    //// recebe hash, e os numeros usp
+    char *token,*path,*endptr,tam[MAX_INPUT],*strsave,str[100];
     int tamhash,indice;
     FILE *arq;
     token = strtok_r(input," ",&strsave);   //// main
@@ -337,13 +337,13 @@ void f_buscahash(tabela *hash,char input[MAX_SIZE]){    //// recebe hash, e os n
     path = strtok_r(NULL," ",&strsave);     //// nome do arquivo path
 
     arq = f_carregaarq(path);               //// carrega o arquivo
-    fgets(str,MAX_SIZE,arq);                //// obtem o tamamnho da tabela
+    fgets(str,MAX_INPUT,arq);                //// obtem o tamamnho da tabela
     tamhash = strtol(str,&endptr,10);
     fseek(arq,0,SEEK_SET);                  //// reseta a posicao do ponteiro par ao começo do arquivo
 
     hash = f_carregatabela(path);           //// carrega tabela
     for(;;){                                //// busca na tabela
-        token = strtok_r(NULL,", \n",&strsave);
+        token = strtok_r(NULL,",\n",&strsave);
         if(token == NULL){break;}
         /*printf("--%s--",token);*/
         indice = f_chave(token,tamhash);    //// obtem o indice, de f_chave, nota: se houverem colisões, a funcao busca apenas ira encontrar o primeiro elemento que
@@ -356,23 +356,23 @@ void f_buscahash(tabela *hash,char input[MAX_SIZE]){    //// recebe hash, e os n
     fclose(arq);
 }
 ///remove na tabela hash
-void f_removehash(tabela *hash,char input[MAX_SIZE]){
-    char *token,*path,*endptr,*strsave,str[MAX_SIZE];
+void f_removehash(tabela *hash,char input[MAX_INPUT]){
+    char *token,*path,*endptr,*strsave,str[MAX_INPUT];
     int tamhash,qtde,indice;
     FILE *arq;
     token = strtok_r(input," ",&strsave);   //// main
     token = strtok_r(NULL," ",&strsave);    //// buscar
     path = strtok_r(NULL," ",&strsave);     //// nome do arquivo path
     arq = f_carregaarq(path);               //// carrega o arquivo
-    fgets(str,MAX_SIZE,arq);                //// obtem o tamanho da tabela hash
+    fgets(str,MAX_INPUT,arq);                //// obtem o tamanho da tabela hash
     tamhash = strtol(str,&endptr,10);
-    fgets(str,MAX_SIZE,arq);                //// obtem a qtde de elementos
+    fgets(str,MAX_INPUT,arq);                //// obtem a qtde de elementos
     qtde = strtol(str,&endptr,10);
     fseek(arq,0,SEEK_SET);                  //// reseta a posicao do ponteiro par ao começo do arquivo
 
     hash = f_carregatabela(path);           //// carrega tabela
     for(;;){                                //// remove o elemento
-        token = strtok_r(NULL,", \n",&strsave);
+        token = strtok_r(NULL,",\n",&strsave);
         if(token == NULL){break;}
         /*printf("--%s--",token);*/
         indice = f_chave(token,tamhash);    //// caso houver colisao, acontece o mesmo problema que na busca.
@@ -394,13 +394,13 @@ void f_removehash(tabela *hash,char input[MAX_SIZE]){
     fclose(arq);
 }
 ///menu
-void menu(tabela *hash, FILE *arq, char str[MAX_SIZE]){ //// recebe un endereço de tabela, um endereço de arquivo, e um input --> str
-    char str2[MAX_SIZE],*strsave;
+void menu(tabela *hash, FILE *arq, char str[MAX_INPUT]){ //// recebe un endereço de tabela, um endereço de arquivo, e um input --> str
+    char str2[MAX_INPUT],*strsave;
     char *token;
     char *path, *endptr;
     int aux;
 
-    memcpy(str2,str,MAX_SIZE);              //// string de seguraça, pois o strtok e strtok_r, modifican string original
+    memcpy(str2,str,MAX_INPUT);              //// string de seguraça, pois o strtok e strtok_r, modifican string original
     token = strtok_r(str," ",&strsave);     //// tokeniza o input
     if(strcmp(token,"main")!= 0 ){
         return;
