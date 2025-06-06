@@ -15,7 +15,9 @@ struct formulario{
 ///criar tabela hash
 tabela *f_criatabela(int tamanho){
     tabela *hash = (tabela*)malloc(tamanho*sizeof(tabela));
-    if(hash== NULL){return;}
+    if(hash== NULL){
+            return NULL;
+    }
     for(int i=0;i<tamanho;i++){
         aluno *al = (aluno*)malloc(sizeof(aluno));
         al->indice = i;
@@ -154,7 +156,7 @@ tabela *f_ineserenatabela(char str[MAX_INPUT]){
             nome = strtok_r(NULL,",\n",&strsave);         // guarda nome
             curso = strtok_r(NULL,",\n",&strsave);     // guarda curso
             chave = f_chave(nome,tamhash);              // obtem a chave
-            if(chave > tamhash){return ;}              // verifica se chave a é valida (descesserário pois N mod tamhash é feito)
+            if(chave > tamhash){return NULL ;}              // verifica se chave a é valida (descesserário pois N mod tamhash é feito)
             al = hash[chave];                           // obtem o elemento do indice
 
             if(strcmp(al->nome,"(null)")==0){           // verifica se o primeiro elemento esta vazio

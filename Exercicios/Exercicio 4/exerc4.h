@@ -1,7 +1,7 @@
 #ifndef EXERC4_H_INCLUDED
 #define EXERC4_H_INCLUDED
-#define MAX_SIZE 1000
-#define MAX_INPUT 1000
+#define MAX_SIZE 100000
+#define MAX_INPUT 100000
 /// estrutura da tabela
 typedef struct formulario* tabela;
 typedef struct formulario aluno;
