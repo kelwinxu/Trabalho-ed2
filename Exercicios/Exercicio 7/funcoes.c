@@ -5,10 +5,13 @@
 #define MAX_SOLUCOES 10000000
 #include "funcoes.h"
 
-///Ver depois useu busca com retocesso
+///Area de Variaveis
 int flag;
-int n;
+extern int n;
 int chamadas_recursivas = 0; ///Para contar as chamadas
+Solucao solucoes[MAX_SOLUCOES];
+int total_solucoes = 0;
+///Flag
 void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     if (*flag == 0 || i == n) return;
     if (a[i] != b[i]) {
@@ -17,10 +20,6 @@ void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     }
     sao_iguais_rec(a, b, i + 1, flag);
 }
-
-Solucao solucoes[MAX_SOLUCOES];
-int total_solucoes = 0;
-
 ///Faz matriz indentidade recursivamente
 void copiar_identidade_rec(int *original, int *destino, int i) {
     if (i == n) return;
@@ -122,7 +121,7 @@ void diagonal_secundaria_divide_conquista(int *original, int *destino, int inici
     diagonal_secundaria_divide_conquista(original, destino, meio + 1, fim);
 }
 
-///Top 10 gambiarras do ano, puro algelin (teorizado não totalmente)
+///Gera todas as 8 transformações geométricas possíveis da solução
 void gerar_transformacoes(int *original, int transformacoes[8][MAX_N]) {
     copiar_identidade_rec(original, transformacoes[0], 0);
     rotacao_90_divide_conquista(original, transformacoes[1], 0, n - 1);
@@ -173,7 +172,7 @@ int solucao_e_unica(int *nova) {
 }
 
 
-/// Exibe vetor da solu��o
+/// Exibe vetor da solução
 void exibir_solucao_rec(int *tabuleiro, int i){
     if (i == n){
         printf("]\n");
@@ -188,8 +187,8 @@ void exibir_solucao(int *tabuleiro){
     printf("[");
     exibir_solucao_rec(tabuleiro, 0);
 }
-
-///O diabo vai temer isso
+///Verifica se a posição atual da rainha (na linha `linha`) não entra em conflito
+///com as linhas anteriores
 int solucao_parcial_rec(int *tabuleiro, int linha, int k) {
     if (k == linha) return 1;
     if (tabuleiro[k] == tabuleiro[linha] || abs(tabuleiro[k] - tabuleiro[linha]) == abs(k - linha))
