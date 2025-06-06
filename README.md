@@ -18,6 +18,6 @@ vem trabalhar 😭😭
  
  >ex6. ?
 
- >ex7. uma dia essa miseria sai, (99,3%) pronto
+ >ex7. uma dia essa miseria sai, (99,9%) pronto
 
 
