@@ -74,3 +74,37 @@ void buscar_valores_repetidos(int lista[], int tamanho, int valores[], int qtd_v
     // Inicia a busca recursiva para o primeiro valor
     procurar_valor(0);
 }
+
+void executar_busca(int lista[], int tamanho, int valores[], int qtd_valores) {
+    int resultado[100][2];
+
+    buscar_valores_repetidos(lista, tamanho, valores, qtd_valores, resultado);
+
+    for (int i = 0; i < qtd_valores; i++) {
+        printf("Valor %d: (%d, %d)\n", valores[i], resultado[i][0], resultado[i][1]);
+    }
+}
+
+/// Função para limpar colchetes e quebrar string por vírgula
+int quebra_col(char *str, int arr[]) {
+    int c = 0;
+    int len = strlen(str);
+    char *limpa = malloc(len + 1);
+    int j = 0;
+
+    for (int i = 0; i < len; i++) {
+        if (str[i] != '[' && str[i] != ']') {
+            limpa[j++] = str[i];
+        }
+    }
+    limpa[j] = '\0';
+
+    char *quebra = strtok(limpa, ",");
+    while (quebra != NULL) {
+        arr[c++] = atoi(quebra);
+        quebra = strtok(NULL, ",");
+    }
+
+    free(limpa);
+    return c;
+}
