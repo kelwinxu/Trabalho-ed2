@@ -5,15 +5,15 @@
 
 int n = 0;
 
-// ProtÛtipo da funÁ„o que resolve o problema (backtracking)
+// Prot√≥tipo da fun√ß√£o que resolve o problema (backtracking)
 void resolver(int linha, int *tabuleiro);
 
-int main(int argc, char *arg v[]) {
-    int tabuleiro[MAX_N]; // Array para guardar as posiÁıes das rainhas no tabuleiro
+int main(int argc, char *argv[]) {
+    int tabuleiro[MAX_N]; // Array para guardar as posi√ß√µes das rainhas no tabuleiro
 
 
     if (argc == 1) {
-        // Nenhum argumento -> rodar casos de teste autom·ticos
+        // Nenhum argumento -> rodar casos de teste autom√°ticos
         int testes[] = {4, 8};
         for (int i = 0; i < 2; i++) {
             n = testes[i];
@@ -29,9 +29,9 @@ int main(int argc, char *arg v[]) {
         }
     }
     else if (argc == 2) {
-            // Caso tenha exatamente 1 argumento, interpret·-lo como o valor de N
+            // Caso tenha exatamente 1 argumento, interpret√°-lo como o valor de N
         n = atoi(argv[1]);
-        if (n < 1 || n > MAX_N) {  // Verifica se N est· dentro dos limites permitidos (limitados no comeÁo do codigo)
+        if (n < 1 || n > MAX_N) {  // Verifica se N est√° dentro dos limites permitidos (limitados no come√ßo do codigo)
             printf("Valor de N invalido.\n"); // Sai do programa com erro
             return 1;
         }
@@ -45,7 +45,7 @@ int main(int argc, char *arg v[]) {
         printf("Chamadas recursivas: %d\n", chamadas_recursivas);
     }
     else {
-        // Caso o n˙mero de argumentos seja diferente de 0 ou 1, mostrar mensagem de uso incorreto
+        // Caso o n√∫mero de argumentos seja diferente de 0 ou 1, mostrar mensagem de uso incorreto
         printf("Uso incorreto: execute sem argumentos para casos de teste ou com 1 argumento (valor de N).\n");
         return 1;
     }
