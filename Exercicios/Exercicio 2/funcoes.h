@@ -1,8 +1,6 @@
 #ifndef FUNCOES_H_INCLUDED
 #define FUNCOES_H_INCLUDED
-int ver_decrescente(int lista[], int esquerda, int direita);
-int encontrar_primeira_ocorrencia(int lista[], int esquerda, int direita, int valor, int decrescente);
-void buscar_valores_repetidos(int lista[], int tamanho, int valores[], int qtd_valores, int resultado[][2]);
-void executar_busca(int lista[], int tamanho, int valores[], int qtd_valores);
-int parse_lista(char *str, int arr[]);
+int quebra_col(char *str, int arr[]);
+void buscar_valores_repetidos(int lista[], int tamanho, int valores[], int qtd_valores, int resultado[][2], int decrescente);
+void executar_busca_com_ordem(int lista[], int tamanho, int valores[], int qtd_valores, int decrescente);
 #endif // FUNCOES_H_INCLUDED
