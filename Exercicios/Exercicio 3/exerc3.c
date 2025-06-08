@@ -139,7 +139,6 @@ return chave;
 tabela *f_respalhamento(tabela *hash, int *tamhash){ // recebe o endereço de tamhash
 
     tabela *hash2;
-    char *endptr;
 
     int aux = *tamhash;
     int indice;
@@ -160,7 +159,7 @@ tabela *f_respalhamento(tabela *hash, int *tamhash){ // recebe o endereço de ta
 }
 ///insere na tabela hash
 tabela *f_ineserenatabela(char str[MAX_INPUT]){
-    char *token,*path,*endptr,*endptr2,*strsave, str2[MAX_INPUT];
+    char *token,*path,*endptr,*strsave, str2[MAX_INPUT];
     tabela *hash;
     FILE *arq;
     int chave, tamhash,qtd;
@@ -220,10 +219,9 @@ tabela *f_ineserenatabela(char str[MAX_INPUT]){
 
 ///insere tabela hash no arquivo de texto
 void f_inserehashnorquivo(tabela *hash,char *path){    //// recebe a tabelha hash pre alocda, e nao necessariamente preenchida, e o nome do arquivo path
-    char **endptr;
     int tamhash, qtde;
     FILE *arq;
-    aluno *no = (tabela*)malloc(sizeof(tabela));
+    aluno *no = (aluno*)malloc(sizeof(aluno));
     arq = f_carregaarq(path);
     fscanf(arq,"%d",&tamhash);
     fscanf(arq,"%d",&qtde);
@@ -233,13 +231,13 @@ void f_inserehashnorquivo(tabela *hash,char *path){    //// recebe a tabelha has
     fprintf(arq,"%d\n",qtde);
     if(no == NULL){return;}
     for(int i=0;i<tamhash;i++){
-    aluno *aluno = (tabela*)malloc(sizeof(tabela));
-    aluno = hash[i];
-      fprintf(arq,"%d,",aluno->indice);
-      fprintf(arq,"%s,",aluno->nusp);
-      fprintf(arq,"%s,",aluno->nome);
-      fprintf(arq,"%s,",aluno->curso);
-      fprintf(arq,"%d\n",aluno->allocated);
+    aluno *al = (aluno*)malloc(sizeof(aluno));
+    al = hash[i];
+      fprintf(arq,"%d,",al->indice);
+      fprintf(arq,"%s,",al->nusp);
+      fprintf(arq,"%s,",al->nome);
+      fprintf(arq,"%s,",al->curso);
+      fprintf(arq,"%d\n",al->allocated);
     }
     fclose(arq);
 }
@@ -371,7 +369,7 @@ void f_removehash(tabela *hash,char input[MAX_INPUT]){
     fseek(arq,0,SEEK_SET);                  //// reseta a posicao do ponteiro par ao começo do arquivo
 
     hash = f_carregatabela(path);           //// carrega tabela
-    for(;;){                                //// remove o elemento
+    for(;;){                                 //// remove o elemento
         token = strtok_r(NULL,",\n",&strsave);
         if(token == NULL){break;}
         /*printf("--%s--",token);*/
