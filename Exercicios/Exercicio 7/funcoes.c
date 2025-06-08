@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX_N 20 ///O programa simplemente da overflow entre 13-15
+#define MAX_N 20 /// M·ximo tamanho do tabuleiro suportado (alÈm de 13-15 pode ocorrer overflow ou lentid„o)
+
 #define MAX_SOLUCOES 10000000
 #include "funcoes.h"
 
@@ -11,7 +12,7 @@ extern int n;
 int chamadas_recursivas = 0; ///Para contar as chamadas
 Solucao solucoes[MAX_SOLUCOES];
 int total_solucoes = 0;
-///Flag
+/// Compara recursivamente dois vetores. Se forem diferentes em algum ponto, zera a flag.
 void sao_iguais_rec(int *a, int *b, int i, int *flag) {
     if (*flag == 0 || i == n) return;
     if (a[i] != b[i]) {
@@ -27,17 +28,17 @@ void copiar_identidade_rec(int *original, int *destino, int i) {
     copiar_identidade_rec(original, destino, i + 1);
 }
 
-///Importante para entender as opera√ß√µes com vetores
+///Importante para entender as operaÁıes com vetores
 /*
-i √© a coluna atual, ent√£o a da rainha √© (i,original[i])
+i È a coluna atual, ent„o a da rainha È (i,original[i])
 geometricamente seria mais ou menos assim (x,y) -> (y,n-1-x)
-ent√£o estou invertendo por exemplo coluna <-> linha
-270 graus: nada mais √© do que 90 anti-hor√°rio
+ent„o estou invertendo por exemplo coluna <-> linha
+270 graus: nada mais È do que 90 anti-hor·rio
 se pensar geometricamente faz mais sentido
 */
-///------------FIM explica√ß√£o----------------------------
-///Por divis√£o e conquista
-// Rota√ß√£o 90 graus
+///------------FIM explicaÁ„o----------------------------
+///Por divis„o e conquista
+// RotaÁ„o 90 graus
 void rotacao_90_divide_conquista(int *original, int *destino, int inicio, int fim) {
     if (inicio > fim) return;
     if (inicio == fim) {
@@ -49,7 +50,7 @@ void rotacao_90_divide_conquista(int *original, int *destino, int inicio, int fi
     rotacao_90_divide_conquista(original, destino, meio + 1, fim);
 }
 
-// Rota√ß√£o 180 graus
+// RotaÁ„o 180 graus
 void rotacao_180_divide_conquista(int *original, int *destino, int inicio, int fim) {
     if (inicio > fim) return;
     if (inicio == fim) {
@@ -61,7 +62,7 @@ void rotacao_180_divide_conquista(int *original, int *destino, int inicio, int f
     rotacao_180_divide_conquista(original, destino, meio + 1, fim);
 }
 
-// Rota√ß√£o 270 graus
+// RotaÁ„o 270 graus
 void rotacao_270_divide_conquista(int *original, int *destino, int inicio, int fim) {
     if (inicio > fim) return;
     if (inicio == fim) {
@@ -109,7 +110,7 @@ void diagonal_principal_divide_conquista(int *original, int *destino, int inicio
     diagonal_principal_divide_conquista(original, destino, meio + 1, fim);
 }
 
-// Diagonal secund√°ria
+// Diagonal secund·ria
 void diagonal_secundaria_divide_conquista(int *original, int *destino, int inicio, int fim) {
     if (inicio > fim) return;
     if (inicio == fim) {
@@ -121,7 +122,7 @@ void diagonal_secundaria_divide_conquista(int *original, int *destino, int inici
     diagonal_secundaria_divide_conquista(original, destino, meio + 1, fim);
 }
 
-///Gera todas as 8 transforma√ß√µes geom√©tricas poss√≠veis da solu√ß√£o
+///Gera todas as 8 transformaÁıes geomÈtricas possÌveis da soluÁ„o
 void gerar_transformacoes(int *original, int transformacoes[8][MAX_N]) {
     copiar_identidade_rec(original, transformacoes[0], 0);
     rotacao_90_divide_conquista(original, transformacoes[1], 0, n - 1);
@@ -133,8 +134,8 @@ void gerar_transformacoes(int *original, int transformacoes[8][MAX_N]) {
     diagonal_secundaria_divide_conquista(original, transformacoes[7], 0, n - 1);
 }
 
-///Compara√ß√£o com flag + recusiva (n√£o sei se presisava)
-// Verifica recursivamente se nova solu√ß√£o √© igual a alguma transforma√ß√£o
+///ComparaÁ„o com flag + recusiva (n„o sei se presisava)
+// Verifica recursivamente se nova soluÁ„o È igual a alguma transformaÁ„o
 
 void compara_com_transformacoes(int sol_idx, int t_idx, int transformacoes[8][MAX_N], int *encontrado) {
     if (*encontrado || t_idx == 8) return;
@@ -168,11 +169,11 @@ int solucao_e_unica(int *nova) {
 
     int achou = 0;
     verifica_solucoes_existentes(0, total_solucoes, transformacoes, &achou);
-    return !achou; // retorna 1 se for √∫nica, 0 se j√° existe
+    return !achou; // retorna 1 se for ˙nica, 0 se j· existe
 }
 
 
-/// Exibe vetor da solu√ß√£o
+/// Exibe vetor da soluÁ„o
 void exibir_solucao_rec(int *tabuleiro, int i){
     if (i == n){
         printf("]\n");
@@ -187,7 +188,7 @@ void exibir_solucao(int *tabuleiro){
     printf("[");
     exibir_solucao_rec(tabuleiro, 0);
 }
-///Verifica se a posi√ß√£o atual da rainha (na linha `linha`) n√£o entra em conflito
+///Verifica se a posiÁ„o atual da rainha (na linha `linha`) n„o entra em conflito
 ///com as linhas anteriores
 int solucao_parcial_rec(int *tabuleiro, int linha, int k) {
     if (k == linha) return 1;
@@ -220,4 +221,3 @@ void resolver(int linha, int *tabuleiro) {
     }
     tentar_colunas(linha, tabuleiro, 0);
 }
-

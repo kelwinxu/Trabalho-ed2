@@ -4,19 +4,19 @@
 #define MAX_SOLUCOES 10000000
 ///Struct
 typedef struct {
-    int posicoes[MAX_N];
+    int posicoes[MAX_N]; // Cada índice representa a linha e o valor representa a coluna da rainha
 } Solucao;
 ///-------------FIM------------------
 ///------Variaveis Externas----------
-extern int n;
-extern Solucao solucoes[MAX_SOLUCOES];
-extern int total_solucoes;
-extern int chamadas_recursivas;
+extern int n; // Dimensão do tabuleiro (NxN)
+extern Solucao solucoes[MAX_SOLUCOES]; // Armazena soluções únicas
+extern int total_solucoes; // Contador de soluções únicas encontradas
+extern int chamadas_recursivas; // Contador de chamadas para estatísticas
 ///-------------FIM------------------
 ///-------------Funcoes--------------
 void sao_iguais_rec(int *a, int *b, int i, int *flag);
 void copiar_identidade_rec(int *original, int *destino, int i);
-///============Transformações
+/// Transformações geométricas do tabuleiro aplicadas por divisão e conquista
 void rotacao_90_divide_conquista(int *original, int *destino, int inicio, int fim);
 void rotacao_180_divide_conquista(int *original, int *destino, int inicio, int fim);
 void rotacao_270_divide_conquista(int *original, int *destino, int inicio, int fim);
