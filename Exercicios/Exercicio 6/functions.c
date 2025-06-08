@@ -37,6 +37,7 @@ Add them together -> Sorted Array: [1, 2, 3, 4, 5]
     *1r) Array: [5] -> Sorted Array: [5]
 
 OBS.: Since the problem wont have disks with the same weight, we wont be needing the "Same" Array
+OBS.2: The program below is going to swap right and left, for disk manipulation convenience
 */
 
 int* recursiveDistinctQuicksort(int* numbers, int size){
@@ -146,11 +147,14 @@ void recursiveHeapsortInternal(int* numbers, int size) {
     heapify(numbers, 0, size - 1);                      //Adjust the i-1 heap
     recursiveHeapsortInternal(numbers, size - 1);       //Repeat with the rest
 }
+
 void swap(int *a, int *b){
     int temp = *a;                                      //Store
     *a = *b;                                            //Overwrite
     *b = temp;                                          //Backup
 }
+
+/*BROKEN: does not swap with the biggest child, could cause incorrect heap arrays
 void heapify(int* numbers, int index, int size){
     if(size == 0) return;
     if(numbers[index*2+1] > numbers[index] && index*2+1<size){  //If left child is bigger, and it exists
@@ -161,21 +165,40 @@ void heapify(int* numbers, int index, int size){
         swap(&numbers[index*2+2], &numbers[index]);             //Swap the parent with the child
         heapify(numbers, index*2+2, size);                      //Repeat on child's node
     }
+}*/
+
+void heapify(int* numbers, int index, int size){
+    int largest = index;                                        //Starts with parent as the largest
+    int left = 2*index+1;
+    int right = 2*index+2;
+
+    if (left < size && numbers[left] > numbers[largest])        //If left child is bigger, and it exists
+        largest = left;
+    if (right < size && numbers[right] > numbers[largest])      //If right child is bigger, and it exists
+        largest = right;
+
+    if (largest != index) {                                     //Swap parent with the largest child
+        swap(&numbers[index], &numbers[largest]);
+        heapify(numbers, largest, size);
+    }
 }
 
 Tower createEmptyTower(char towerName, int maxSize) {
     Tower tower = {
-        .disk = malloc(sizeof(int) * maxSize),      //Allocs the array
-        .size = 0,                                  //Default to 0
-        .maxSize = maxSize,                         //Set size of array
-        .name = towerName                           //Set name
+        .disk = malloc(sizeof(int) * maxSize),          //Allocs the array
+        .size = 0,                                      //Default to 0
+        .maxSize = maxSize,                             //Set size of array
+        .name = towerName,                              //Set name
+        .originalIndex = malloc(sizeof(int) * maxSize)  //Allocs the array
     };
-    if(tower.disk == NULL && DEBUG_MEMORY) printf("CreateEmptyTower: Memory Allocation failed!");
+    if((tower.disk == NULL || tower.originalIndex == NULL) && DEBUG_MEMORY) printf("CreateEmptyTower: Memory Allocation failed!\n");
     for(int i = 0; i < maxSize; i++) {
+        tower.originalIndex[i] = -1;
         tower.disk[i] = -1;                         //Array starts empty (-1)
     }
     return tower;
 }
+
 void freeTower(Tower *tower){
     free(tower->disk);
 }
@@ -183,16 +206,21 @@ void freeTower(Tower *tower){
 int shiftRight(Tower* tower){
     for(int i = (tower->maxSize)-2; i >= 0; i--){
         tower->disk[i+1] = tower->disk[i];          //Moves every element to the right, last element is lost
+        tower->originalIndex[i+1] = tower->originalIndex[i];
     }
     tower->disk[0] = -1;                            //First slot becomes empty (-1)
+    tower->originalIndex[0] = -1;
     if(DEBUG_MOVEDISK) printf("  shiftRight (%c)*: successful\n", tower->name);
     return 0;
 }
+
 int shiftLeft(Tower* tower){
     for(int i = 0; i < (tower->maxSize)-1; i++){
         tower->disk[i] = tower->disk[i+1];          //Moves every element to the left, first element is lost
+        tower->originalIndex[i] = tower->originalIndex[i+1];
     }
     tower->disk[(tower->maxSize)-1] = -1;           //Last slot becomes empty (-1)
+    tower->originalIndex[(tower->maxSize)-1] = -1;
     if(DEBUG_MOVEDISK) printf("  shiftLeft (%c)*: successful\n", tower->name);
     return 0;
 }
@@ -205,6 +233,7 @@ int MoveDisk(Tower* towerFrom, Tower* towerTo){
     }
     shiftRight(towerTo);                            //Moves to create space for the new top disk
     towerTo->disk[0] = towerFrom->disk[0];          //Copy the new disk to the destination
+    towerTo->originalIndex[0] = towerFrom->originalIndex[0];
     shiftLeft(towerFrom);                           //Erase the disk at the origin
     towerFrom->size--;                              //Update new sizes
     towerTo->size++;
@@ -257,7 +286,7 @@ int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, i
 
     *weightMoved += towerFrom->disk[0];
 
-    printf("-MOVEMENT %d: (Towers: %c[%d] -> %c[%d] / weight = %d)-\n", ++(*movements), towerFrom->name, (towerFrom->size)-1, towerTo->name, towerTo->size, towerFrom->disk[0]);  //Print the movement, and add to the counter
+    printf("-MOVEMENT %d: (Towers: %c -> %c / weight = %d / index:[%d])-\n", ++(*movements), towerFrom->name, towerTo->name, towerFrom->disk[0], towerFrom->originalIndex[0]);  //Print the movement, and add to the counter
 
     MoveDisk(towerFrom, towerTo);                                                           //Move the largest Disk to end
     if(DEBUG_HANOI) printTowersABC(*towerFrom, *towerTemp, *towerTo);
@@ -313,4 +342,10 @@ int printTowersABC(Tower A, Tower B, Tower C){
     else if('C' == C.name) printTower(C, C.name);
     
     return 0;
+}
+
+void setOriginalIndexValue(Tower* tower){
+    for(int i = 0; i < tower->size; i++){    
+        tower->originalIndex[i] = i;
+    }
 }

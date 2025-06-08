@@ -5,9 +5,9 @@
 int* stringToInt(char *c, int size){
     int *array1 = (int*)malloc(sizeof(int) * strlen(c));    // Allocate memory for the array of integers
     for (int i = 0; i < size; i++) {                        // For each character in the string
-        if(c[i] >= 'a' || c[i] <= 'z') {                    // Check if the character is a lowercase letter
+        if(c[i] >= 'a' && c[i] <= 'z') {                    // Check if the character is a lowercase letter
             array1[i] = (int)(c[i] - 'a');                  // Convert the character to an integer
-        } else if(c[i] >= 'A' || c[i] <= 'Z') {             // Check if the character is an uppercase letter
+        } else if(c[i] >= 'A' && c[i] <= 'Z') {             // Check if the character is an uppercase letter
             array1[i] = (int)(c[i] - 'A');                  // Convert the character to an integer
         } else {
             if(DEBUG) printf("ERROR: Invalid character\n");

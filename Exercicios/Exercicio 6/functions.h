@@ -11,6 +11,7 @@ char name;                  //Name for debug and print purposes
 int maxSize;                //The max amount of disks
 int size;                   //The current amount of disks
 int *disk;                  //List of disks by weight, from top to bottom
+int *originalIndex;         //Disk index in the first ordered array (after quick or heap sort)
 } Tower;
 
 
@@ -47,6 +48,8 @@ int *disk;                  //List of disks by weight, from top to bottom
     int recursiveSolve(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements, int* weightMoved);
     //Solve the tower of hanoi
     int recursiveSolveInternal(Tower* towerFrom, Tower* towerTemp, Tower* towerTo, int size, int* movements, int* weightMoved);
+
+    void setOriginalIndexValue(Tower* tower);
 
 //Debug/Print purposes
     //Prints the tower array
