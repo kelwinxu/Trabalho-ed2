@@ -149,6 +149,7 @@ void recursiveHeapsortInternal(int* numbers, int size) {
 }
 
 void swap(int *a, int *b){
+    if(DEBUG_HANOI) printf("swapping: %d with %d", *a, *b);
     int temp = *a;                                      //Store
     *a = *b;                                            //Overwrite
     *b = temp;                                          //Backup

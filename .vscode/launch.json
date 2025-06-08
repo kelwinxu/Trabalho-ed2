@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Aplicativos/GitHub Repositories/Trabalho-ed2/Exercicios/Exercicio 5",
-      "program": "d:/Aplicativos/GitHub Repositories/Trabalho-ed2/Exercicios/Exercicio 5/build/Debug/outDebug",
+      "cwd": "d:/Aplicativos/GitHub Repositories/Trabalho-ed2/Exercicios/Exercicio 6",
+      "program": "d:/Aplicativos/GitHub Repositories/Trabalho-ed2/Exercicios/Exercicio 6/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
