@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
         } else if (strcmp(argv[2], "asc") == 0) {
             decrescente = 0;
         } else {
-            printf("Parâmetro de ordem inválido. Use 'asc' ou 'desc'.\n");
+            printf("Parï¿½metro de ordem invalido. Use 'asc' ou 'desc'.\n");
             return 1;
         }
 
@@ -41,6 +41,5 @@ int main(int argc, char *argv[]) {
 
     printf("Uso incorreto.\n");
     printf("Modo correto: %s \"<vetor>\" <asc|desc> \"<valores>\"\n", argv[0]);
-    printf("Ou execute sem argumentos para testes automáticos.\n");
     return 1;
 }
