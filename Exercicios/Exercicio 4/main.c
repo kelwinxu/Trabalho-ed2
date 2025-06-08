@@ -7,7 +7,7 @@ int main(){
     FILE *arq;
     char str[MAX_INPUT], comp[MAX_INPUT], *strsave,*token, *token2;
     int invalido=0;
-    printf("------ excercicio4: implementacao de tabela hash ------\n -->criacao: main criar <path.txt> nusp,nome,curso,...,curso\n -->insercao: main inserir <path.txt> nusp,nome,curso,...,curso\n -->remocao:main remover <path.txt> nusp,nusp2,...,nuspn\n -->busca: main buscar <path.txt> nusp1,nusp2,..,nuspn\n ?->caracteristicas:funcao hash,enlistamento caso haja colisões,remocao por pilha\n !->Obs:e possivel o conflito com antivirus, devido a manipulacao de arquivos\n !->Obs:os espacos nos nomes devem ser substituidos por underline '_'\n");
+    printf("------ excercicio4: implementacao de tabela hash ------\n -->criacao: main criar tamanho da tabela <path.txt>\n -->insercao: main inserir <path.txt> nusp,nome,curso,...,curso\n -->remocao:main remover <path.txt> nusp,nusp2,...,nuspn\n -->busca: main buscar <path.txt> nusp1,nusp2,..,nuspn\n!->Obs:e possivel o conflito com antivirus, devido a manipulacao de arquivos\n");
     fgets(str,MAX_INPUT,stdin);
     strcpy(comp,str);
 
