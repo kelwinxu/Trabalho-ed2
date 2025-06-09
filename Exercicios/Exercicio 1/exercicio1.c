@@ -95,8 +95,6 @@ return;}
 
     int unidademilhar,centena,dezena,unidade;
     int op1 = 0;
-    int op2 = 0;
-    int op3 = 0; int op4 = 0;
     char operador1[5]; char operador2[5]; char operador3[5]; char operador4[5];
     if (k==3){
 
@@ -145,7 +143,7 @@ if ((i/1000 == 1 || i/1000 == 2 || i/1000 == 3 || i/1000 == 4) && (i>1000 && i<1
                             centena = (i/100)-((i/1000)*10);
                             dezena = (i/10)-((i/100)*10);
                             unidade = (i/1)-((i/10)*10);
-                            int op1,op2,op3;
+                            int op1,op2;
                             if (unidademilhar == 1){
                                 op1 = a+b;
                                 strcpy(operador1, "+");
