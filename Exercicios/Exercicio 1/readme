@@ -1,2 +1,0 @@
-Para compilar, execute: "gcc -o calculadorafinal main.c exercicio1.c -Wall -Wextra -g" no terminal,
-e depois insira: "./calculadorafinal <lista> <valorfinal>"
